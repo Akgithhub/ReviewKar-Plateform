@@ -1,8 +1,11 @@
 import React from 'react'
-
+import Hero from "../components/ui/Hero";
 const About = () => {
   return (
-    <div>About</div>
+<>
+<Hero/>
+<div>About</div>
+</>
   )
 }
 
