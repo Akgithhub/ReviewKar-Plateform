@@ -4,7 +4,7 @@ const Pricing = () => {
   return (
     <>
     <Hero/>
-    <div>Pricing</div>
+
     </>
   )
 }
