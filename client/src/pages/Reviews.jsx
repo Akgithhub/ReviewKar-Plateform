@@ -4,7 +4,6 @@ const Reviews = () => {
   return (
     <>
     <Hero/>
-    <div>Reviews</div>
     </>
   )
 }
