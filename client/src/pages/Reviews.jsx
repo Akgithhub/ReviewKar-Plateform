@@ -1,9 +1,10 @@
 import React from 'react'
-import Hero from "../components/ui/Hero";
+import Hero from "../components/global/Hero";
 const Reviews = () => {
   return (
     <>
-    <Hero/>
+    {/* <Hero/> */}
+    reviews
     </>
   )
 }

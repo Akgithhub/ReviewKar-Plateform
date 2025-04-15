@@ -67,7 +67,7 @@ const Latestreview = () => {
           <div>
             <h2 className="text-3xl font-semibold">Latest Reviews</h2>
             <p className="text-gray-500 mt-1">
-              Cum doctus civibus efficiantur in imperdiet deterruisset.
+            Stay updated with the freshest insights from our community. Check out the latest verified reviews and see what others are saying before you buy or try.
             </p>
           </div>
           <a

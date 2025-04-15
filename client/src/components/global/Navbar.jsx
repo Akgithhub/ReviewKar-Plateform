@@ -24,7 +24,7 @@ function Navbar() {
       navbar.classList.remove("bg-transparent");
 
       if (navLogo) {
-        navLogo.src = "./logo2.svg"; // white background logo
+        navLogo.src = "./reviewKar-vv.png"; // white background logo
       }
       if (navItems) {
         navItems.classList.remove("text-white");
@@ -47,7 +47,7 @@ function Navbar() {
       navbar.classList.add("bg-transparent");
 
       if (navLogo) {
-        navLogo.src = "./logo1.svg"; // transparent background logo
+        navLogo.src = "./reviewKar.png"; // transparent background logo
       }
       if (navItems) {
         navItems.classList.remove("text-gray-700");
@@ -89,8 +89,14 @@ function Navbar() {
           >
             ☰
           </button>
-          <img id="nav-logo" src="./logo1.svg" alt="Logo" className="mx-auto" />
-          <Link to="/" className="flex items-center gap-2"></Link>
+          <Link to="/">
+            <img
+              id="nav-logo"
+              src="./reviewKar.png"
+              alt="Logo"
+              className="md:h-[50px] h-[35px] w-auto mx-auto pt-[4px] md:pt-0"
+            />
+          </Link>
         </div>
 
         {/* Desktop Menu */}
@@ -103,8 +109,8 @@ function Navbar() {
               to="/"
               className={
                 activeItem === "home"
-                  ? "hover:text-blue-600 border-b-2 border-blue-600"
-                  : "hover:text-blue-600"
+                  ? "hover:text-gray-200 border-b-2 border-blue-600"
+                  : "hover:text-gray-200"
               }
               onClick={() => setactiveItem("home")}
             >
@@ -116,8 +122,8 @@ function Navbar() {
               to="/about"
               className={
                 activeItem === "about"
-                  ? "hover:text-blue-600 border-b-2 border-blue-600"
-                  : "hover:text-blue-600"
+                  ? "hover:text-gray-200 border-b-2 border-blue-600"
+                  : "hover:text-gray-200"
               }
               onClick={() => setactiveItem("about")}
             >
@@ -129,8 +135,8 @@ function Navbar() {
               to="/reviews"
               className={
                 activeItem === "reviews"
-                  ? "hover:text-blue-600 border-b-2 border-blue-600"
-                  : "hover:text-blue-600"
+                  ? "hover:text-gray-200 border-b-2 border-blue-600"
+                  : "hover:text-gray-200"
               }
               onClick={() => setactiveItem("reviews")}
             >
@@ -139,11 +145,24 @@ function Navbar() {
           </li>
           <li>
             <Link
+              to="/catogery"
+              className={
+                activeItem === "catogery"
+                  ? "hover:text-gray-200 border-b-2 border-blue-600"
+                  : "hover:text-gray-200"
+              }
+              onClick={() => setactiveItem("catogery")}
+            >
+              Our Catogery
+            </Link>
+          </li>
+          <li>
+            <Link
               to="/pricing"
               className={
                 activeItem === "pricing"
-                  ? "hover:text-blue-600 border-b-2 border-blue-600"
-                  : "hover:text-blue-600"
+                  ? "hover:text-gray-200 border-b-2 border-blue-600"
+                  : "hover:text-gray-200"
               }
               onClick={() => setactiveItem("pricing")}
             >
@@ -180,8 +199,8 @@ function Navbar() {
             to="/"
             className={
               activeItem === "home"
-                ? "hover:text-blue-600 border-b-2 border-blue-600"
-                : "hover:text-blue-600"
+                ? "hover:text-gray-200 border-b-2 border-blue-600"
+                : "hover:text-gray-200"
             }
             onClick={() => {
               setactiveItem("home");
@@ -194,8 +213,8 @@ function Navbar() {
             to="/about"
             className={
               activeItem === "about"
-                ? "hover:text-blue-600 border-b-2 border-blue-600"
-                : "hover:text-blue-600"
+                ? "hover:text-gray-200 border-b-2 border-blue-600"
+                : "hover:text-gray-200"
             }
             onClick={() => {
               setactiveItem("about");
@@ -208,8 +227,8 @@ function Navbar() {
             to="/reviews"
             className={
               activeItem === "reviews"
-                ? "hover:text-blue-600 border-b-2 border-blue-600"
-                : "hover:text-blue-600"
+                ? "hover:text-gray-200 border-b-2 border-blue-600"
+                : "hover:text-gray-200"
             }
             onClick={() => {
               setactiveItem("reviews");
@@ -222,8 +241,8 @@ function Navbar() {
             to="/pricing"
             className={
               activeItem === "pricing"
-                ? "hover:text-blue-600 border-b-2 border-blue-600"
-                : "hover:text-blue-600"
+                ? "hover:text-gray-200 border-b-2 border-blue-600"
+                : "hover:text-gray-200"
             }
             onClick={() => {
               setactiveItem("pricing");
@@ -231,6 +250,20 @@ function Navbar() {
             }}
           >
             Pricing
+          </Link>
+          <Link
+            to="/catogery"
+            className={
+              activeItem === "catogery"
+                ? "hover:text-gray-200 border-b-2 border-blue-600"
+                : "hover:text-gray-200"
+            }
+            onClick={() => {
+              setactiveItem("catogery");
+              toggleNav(); // call both onClick functions here
+            }}
+          >
+            Our Catogery
           </Link>
 
           <button className="bg-blue-500 text-white rounded hover:bg-blue-600 py-2 px-4">

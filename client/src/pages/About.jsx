@@ -1,12 +1,18 @@
-import React from 'react'
-import Hero from "../components/ui/Hero";
+import React from "react";
+import Hero from "../components/global/Hero";
 const About = () => {
+const aboutHeroData = {
+    title: "About Us",
+    subtitle: "Learn more about our mission and values",
+    buttonText: "Join Us",
+    bgImage: "./help-you.jpg"
+  };
   return (
-<>
-<Hero/>
-<div>About</div>
-</>
-  )
-}
+    <>
+      <Hero title={aboutHeroData.title} subtitle={aboutHeroData.subtitle} buttonText={aboutHeroData.buttonText} bgImage={aboutHeroData.bgImage} />
+      <div>About</div>
+    </>
+  );
+};
 
-export default About
+export default About;

@@ -42,19 +42,21 @@ const TopCatogery = () => {
     <>
       <section className="bg-gray-100 py-12 px-4 md:px-10">
         <div className="max-w-7xl mx-auto">
-          <div className="flex flex-col md:flex-row md:items-center items-start gap-8 justify-between mb-6">
-            <div>
-              <h2 className="text-3xl font-semibold">Top Categories</h2>
+            <h2 className="text-3xl font-semibold">Top Categories</h2>
+          <div>
+            <div className="flex flex-col md:flex-row md:items-center items-start gap-8 justify-between mb-6">
               <p className="text-gray-500 mt-1">
-                Cum doctus civibus efficiantur in imperdiet deterruisset.
+                Explore our most popular categories—from tech gadgets to local
+                services. Find real reviews, from real users, in the areas that
+                matter most to you.
               </p>
+              <a
+                href="#"
+                className="text-blue-600 hover:underline font-medium text-sm flex items-center gap-1"
+              >
+                View all →
+              </a>
             </div>
-            <a
-              href="#"
-              className="text-blue-600 hover:underline font-medium text-sm flex items-center gap-1"
-            >
-              View all →
-            </a>
           </div>
 
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
