@@ -12,6 +12,7 @@ const Home = () => {
     bgImage: "./home_section.jpg",
     getReviewsButtonText: "Get Reviews",
     earnButtonText: "Earn",
+    inputSection:true
   };
   return (
     <>
@@ -22,6 +23,7 @@ const Home = () => {
         bgImage={homeHeroData.bgImage}
         getReviewsButtonText={homeHeroData.getReviewsButtonText}
         earnButtonText={homeHeroData.earnButtonText}
+        inputSection={homeHeroData.inputSection}
       />
       <TopCatogery />
       <Latestreview />
