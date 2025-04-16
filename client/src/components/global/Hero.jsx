@@ -1,5 +1,5 @@
 import React from "react";
-
+import { Link } from "react-router-dom";
 const Hero = ({
   title,
   subtitle,
@@ -19,7 +19,9 @@ const Hero = ({
           <h1 className="text-white text-4xl md:text-5xl font-bold mb-4">
             {title}
           </h1>
-          <p className="text-gray-200 text-lg md:text-xl mb-8">{subtitle}</p>
+          <p className="text-gray-200 text-lg md:text-[18px] mb-8 max-w-[70%]">
+            {subtitle}
+          </p>
 
           {inputSection && (
             <div className="flex flex-col sm:flex-row bg-white shadow-lg rounded-md overflow-hidden w-full max-w-3xl">
@@ -46,10 +48,10 @@ const Hero = ({
           {getReviewsButtonText && earnButtonText && (
             <div className="flex flex-col md:flex-row justify-center items-center mt-6 w-full gap-4">
               <button className="bg-blue-500 text-white rounded hover:bg-blue-600 px-[40px] py-[10px] max-w-[300px]">
-                {getReviewsButtonText}
+                <Link to="/pricing">{getReviewsButtonText}</Link>
               </button>
               <button className="bg-blue-500 text-white rounded hover:bg-blue-600 px-[40px] py-[10px] max-w-[500px]">
-                {earnButtonText}
+                <Link to="/">{earnButtonText}</Link>
               </button>
             </div>
           )}

@@ -5,6 +5,7 @@ import Home from "./Pages/Home";
 import About from "./Pages/About";
 import Pricing from "./Pages/Pricing";
 import Reviews from "./Pages/Reviews";
+import Earn from "./Pages/Earn";
 import Catogery from "./pages/Catogery";
 const App = () => {
   return (
@@ -16,6 +17,7 @@ const App = () => {
             <Route path="about" element={<About />} />
             <Route path="reviews" element={<Reviews />} />
             <Route path="pricing" element={<Pricing />} />
+            <Route path="earn" element={<Earn />} />
             <Route path="catogery" element={<Catogery />} />
           </Route>
         </Routes>
