@@ -7,6 +7,24 @@ import { useEffect } from "react";
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeItem, setactiveItem] = useState("home");
+  const reviewDropDownList = [
+    { id: 1, name: "Restaurants", link: "/reviews/restaurants" },
+    { id: 2, name: "Hotels", link: "/reviews/hotels" },
+    { id: 3, name: "Clothing", link: "/reviews/clothing" },
+    { id: 3, name: "Movies", link: "/reviews/movies" },
+    { id: 4, name: "Beauty", link: "/reviews/beauty" },
+    { id: 5, name: "Teach", link: "/reviews/teach" },
+    { id: 5, name: "Bars", link: "/reviews/bars" },
+  ];
+  const catogeryDropDownList = [
+    { id: 1, name: "Restaurants", link: "/catogery/restaurants" },
+    { id: 2, name: "Hotels", link: "/catogery/hotels" },
+    { id: 3, name: "Clothing", link: "/catogery/clothing" },
+    { id: 3, name: "Movies", link: "/catogery/movies" },
+    { id: 4, name: "Beauty", link: "/catogery/beauty" },
+    { id: 5, name: "Teach", link: "/catogery/teach" },
+    { id: 5, name: "Bars", link: "/catogery/bars" },
+  ];
 
   const toggleNav = () => {
     setIsOpen(!isOpen);
@@ -130,32 +148,68 @@ function Navbar() {
               About
             </Link>
           </li>
-          <li>
+          <li className="relative group">
             <Link
               to="/reviews"
-              className={
+              className={`block${
                 activeItem === "reviews"
-                  ? "hover:text-gray-200 border-b-2 border-blue-600"
+                  ? "text-blue-600 border-b-2 border-blue-600"
                   : "hover:text-gray-200"
-              }
+              }`}
               onClick={() => setactiveItem("reviews")}
             >
               Reviews
             </Link>
+
+            {/* Dropdown Menu */}
+            <div className="absolute left-10 w-[300px] mt-2 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 z-50">
+              {reviewDropDownList.map((item) => (
+                <ul className="py-2 text-sm text-gray-700 text-center">
+                  <li key={item.id}>
+                    <Link
+                      to={item.link}
+                      className="block px-2 py-2 hover:bg-blue-300 hover:text-white transition"
+                    >
+                      {item.name}
+                    </Link>
+                  </li>
+                  <hr className="w-[80%] mx-auto text-blue-200" />
+                </ul>
+              ))}
+            </div>
           </li>
-          <li>
+
+          <li className="relative group">
             <Link
               to="/catogery"
-              className={
+              className={`block${
                 activeItem === "catogery"
-                  ? "hover:text-gray-200 border-b-2 border-blue-600"
+                  ? "text-blue-600 border-b-2 border-blue-600"
                   : "hover:text-gray-200"
-              }
+              }`}
               onClick={() => setactiveItem("catogery")}
             >
-              Our Catogery
+              Our Category
             </Link>
+
+            {/* Dropdown Menu */}
+            <div className="absolute left-10 w-[300px] mt-2 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 z-50">
+              <ul className="py-2 text-sm text-gray-700 text-center">
+                {catogeryDropDownList.map((item) => (
+                  <li key={item.id}>
+                    <Link
+                      to={item.link}
+                      className="block px-2 py-2 hover:bg-blue-300 hover:text-white transition"
+                    >
+                      {item.name}
+                    </Link>
+                    <hr className="w-[80%] mx-auto text-blue-200" />
+                  </li>
+                ))}
+              </ul>
+            </div>
           </li>
+
           <li>
             <Link
               to="/pricing"
@@ -174,14 +228,10 @@ function Navbar() {
         {/* Desktop Buttons */}
         <div className="hidden md:flex gap-3 items-center">
           <button className="bg-blue-500 text-white rounded hover:bg-blue-600 py-2 px-4">
-          <Link to="/earn ">
-            Earn
-          </Link>
+            <Link to="/earn ">Earn</Link>
           </button>
           <button className="bg-gray-900 text-white rounded hover:bg-gray-800 py-2 px-4">
-          <Link to="/pricing">
-            Get Reviews
-          </Link>
+            <Link to="/pricing">Get Reviews</Link>
           </button>
           <FiLogOut
             id="logout-icon-desktop"
@@ -271,14 +321,10 @@ function Navbar() {
           </Link>
 
           <button className="bg-blue-500 text-white rounded hover:bg-blue-600 py-2 px-4">
-          <Link to="/earn">
-            Earn
-          </Link>
+            <Link to="/earn">Earn</Link>
           </button>
           <button className="bg-gray-900 text-white rounded hover:bg-gray-800 py-2 px-4">
-          <Link to="/pricing">
-            Get Reviews
-          </Link>
+            <Link to="/pricing">Get Reviews</Link>
           </button>
         </div>
       )}

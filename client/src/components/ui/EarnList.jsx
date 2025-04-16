@@ -4,19 +4,10 @@ const EarnList = () => {
   const CardData = [
     {
       id: 1,
-      title: "Head",
+      title: "Head1",
       description:
         "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
       image: "./pricing-hero.jpg",
-      category: "Category",
-      date: "20 Dec, 2017",
-    },
-    {
-      id: 1,
-      title: "Head",
-      description:
-        "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
-        image: "./pricing-hero.jpg",
       category: "Category",
       date: "20 Dec, 2017",
     },
@@ -59,6 +50,15 @@ const EarnList = () => {
     {
       id: 6,
       title: "Head",
+      description:
+        "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
+        image: "./pricing-hero.jpg",
+      category: "Category",
+      date: "20 Dec, 2017",
+    },
+    {
+      id: 7,
+      title: "Head6",
       description:
         "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
         image: "./pricing-hero.jpg",
