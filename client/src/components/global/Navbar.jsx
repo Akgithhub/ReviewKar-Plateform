@@ -164,18 +164,27 @@ function Navbar() {
             {/* Dropdown Menu */}
             <div className="absolute left-10 w-[300px] mt-2 bg-white rounded-md shadow-lg opacity-0 group-hover:opacity-100 invisible group-hover:visible transition-all duration-200 z-50">
               {reviewDropDownList.map((item) => (
-                <ul className="py-2 text-sm text-gray-700 text-center">
-                  <li key={item.id}>
-                    <Link
-                      to={item.link}
-                      className="block px-2 py-2 hover:bg-blue-300 hover:text-white transition"
-                    >
-                      {item.name}
-                    </Link>
-                  </li>
-                  <hr className="w-[80%] mx-auto text-blue-200" />
-                </ul>
+                <>
+                  <ul className="py-2 text-sm text-gray-700 text-center">
+                    <li key={item.id}>
+                      <Link
+                        to={item.link}
+                        className="block px-2 py-2 hover:bg-blue-300 hover:text-white transition"
+                      >
+                        {item.name}
+                      </Link>
+                    </li>
+                    <hr className="w-[80%] mx-auto text-blue-200" />
+                  </ul>
+                </>
               ))}
+              <div className="text-blue-700 text-[12px] font-semibold py-[10px] text-right pr-[20px]">
+                {activeItem === "reviews" ? (
+                  <></>
+                ) : (
+                  <Link to="/reviews">See All Reviews</Link>
+                )}
+              </div>
             </div>
           </li>
 
@@ -207,6 +216,13 @@ function Navbar() {
                   </li>
                 ))}
               </ul>
+              <div className="text-blue-700 text-[12px] font-semibold py-[10px] text-right pr-[20px]">
+                {activeItem === "catogery" ? (
+                  <></>
+                ) : (
+                  <Link to="/catogery">See All Categories</Link>
+                )}
+              </div>
             </div>
           </li>
 

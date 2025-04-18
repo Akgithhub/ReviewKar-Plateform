@@ -42,7 +42,7 @@ const TopCatogery = () => {
     <>
       <section className="bg-gray-100 py-12 px-4 md:px-10">
         <div className="max-w-7xl mx-auto">
-            <h2 className="text-3xl font-semibold">Top Categories</h2>
+          <h2 className="text-3xl font-semibold">Top Categories</h2>
           <div>
             <div className="flex flex-col md:flex-row md:items-center items-start gap-8 justify-between mb-6">
               <p className="text-gray-500 mt-1">
