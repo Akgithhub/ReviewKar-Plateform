@@ -3,6 +3,12 @@ import { FaRegCommentDots } from "react-icons/fa";
 import { FiLogOut } from "react-icons/fi";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import {
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/clerk-react";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
@@ -37,7 +43,7 @@ function Navbar() {
     const logoutIconDekstop = document.getElementById("logout-icon-desktop");
     const logoutIconMobile = document.getElementById("logout-icon-mobile");
     const navToggle = document.getElementById("navtoggle");
-    if (window.scrollY > 500) {
+    if (window.scrollY > 50) {
       navbar.classList.add("bg-white", "shadow-lg");
       navbar.classList.remove("bg-transparent");
 
@@ -249,17 +255,40 @@ function Navbar() {
           <button className="bg-gray-900 text-white rounded hover:bg-gray-800 py-2 px-4">
             <Link to="/pricing">Get Reviews</Link>
           </button>
-          <FiLogOut
+          {/* <FiLogOut
             id="logout-icon-desktop"
             className="text-xl text-white hover:text-black cursor-pointer"
-          />
+          /> */}
+          <div
+            id="logout-icon-desktop"
+            className="text-xl text-white
+            hover:text-black cursor-pointer"
+          >
+            <SignedOut>
+              <SignInButton />
+            </SignedOut>
+            <SignedIn>
+              <UserButton />
+            </SignedIn>
+          </div>
         </div>
 
         {/* Mobile Logout Icon */}
-        <FiLogOut
+        {/* <FiLogOut
           id="logout-icon-mobile"
           className="md:hidden text-xl text-white hover:text-black cursor-pointer"
-        />
+        /> */}
+        <div
+          id="logout-icon-mobile"
+          className="md:hidden text-xl text-white hover:text-black cursor-pointer"
+        >
+          <SignedOut>
+            <SignInButton />
+          </SignedOut>
+          <SignedIn>
+            <UserButton />
+          </SignedIn>
+        </div>
       </div>
 
       {/* Mobile Menu */}
