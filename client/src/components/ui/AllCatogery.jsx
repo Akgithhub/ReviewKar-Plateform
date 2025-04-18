@@ -42,10 +42,10 @@ const AllCategory = () => {
     <section className="bg-white py-16">
       <div className="max-w-6xl mx-auto px-4">
         <h2 className="text-3xl font-bold text-center text-gray-800 mb-2">
-          Vanno companies categories
+          ReviewKar Companies categories
         </h2>
         <p className="text-center text-gray-500 mb-10">
-          Cum doctus civibus efficiantur in imperdiet deterruisset.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Aperiam nobis unde nisi. Sequi iure aperiam repudiandae odio, repellat cumque iusto.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

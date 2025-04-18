@@ -7,6 +7,7 @@ import Pricing from "./Pages/Pricing";
 import Reviews from "./Pages/Reviews";
 import Earn from "./Pages/Earn";
 import Catogery from "./pages/Catogery";
+import CatogeryReview from "./pages/CatogeryReview";
 const App = () => {
   return (
     <>
@@ -19,6 +20,7 @@ const App = () => {
             <Route path="pricing" element={<Pricing />} />
             <Route path="earn" element={<Earn />} />
             <Route path="catogery" element={<Catogery />} />
+            <Route path="single-catogery-review" element={<CatogeryReview />} />
           </Route>
         </Routes>
       </Router>
