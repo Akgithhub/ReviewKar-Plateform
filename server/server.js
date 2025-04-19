@@ -5,9 +5,10 @@ import dbConnect from "./helper/dbConnect.js";
 import { userRouter } from "./routes/authRoute.js";
 import { clerkMiddleware } from "@clerk/express";
 import {ClerkExpressRequireAuth} from "@clerk/clerk-sdk-node"
+import dotenv from "dotenv";
 // Load environment variables
 configDotenv();
-
+dotenv.config();
 // Create Express app
 const app = express();
 const port = process.env.PORT || 3000;
@@ -17,7 +18,7 @@ dbConnect();
 
 // Clerk middleware (authentication layer)
 app.use(clerkMiddleware({ secretKey: process.env.CLERK_SECRET_KEY }));
-app.use(clerkMiddleware({ secretKey: process.env.CLERK_PUBLISH_KEY }));
+app.use(clerkMiddleware({ secretKey: process.env.CLERK_PUBLISHABLE_KEY }));
 
 // JSON body parsing
 app.use(express.json());
