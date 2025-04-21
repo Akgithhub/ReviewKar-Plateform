@@ -13,7 +13,7 @@ const cardSchema = new mongoose.Schema(
     category: {
       type: String,
       enum: ["Product", "Restaurant", "Hotel", "Clothing", "Service", "Other"],
-      required: true,
+    //   required: true,
     },
     imageUrl: {
       type: String, // Will store the ImageKit URL
@@ -24,7 +24,7 @@ const cardSchema = new mongoose.Schema(
     },
     totalReviewsNeeded: {
       type: Number,
-      required: true, // How many reviews the user wants
+    //   required: true, // How many reviews the user wants
     },
     maxSubmissions: {
       type: Number,
@@ -32,7 +32,7 @@ const cardSchema = new mongoose.Schema(
     },
     companyName: {
       type: String,
-      required: true, // Company creating the review card
+    //   required: true, // Company creating the review card
     },
     submissions: [
       {
