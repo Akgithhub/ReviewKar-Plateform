@@ -16,15 +16,23 @@ const cardSchema = new mongoose.Schema(
       required: true,
     },
     imageUrl: {
-      type: String,
+      type: String, // Will store the ImageKit URL
     },
     rewardAmount: {
       type: Number,
-      default: 10, // could be points, rupees, etc.
+      default: 10, // ₹10 by default
+    },
+    totalReviewsNeeded: {
+      type: Number,
+      required: true, // How many reviews the user wants
     },
     maxSubmissions: {
       type: Number,
-      default: 1,
+      default: 1, // Optionally can limit per user
+    },
+    companyName: {
+      type: String,
+      required: true, // Company creating the review card
     },
     submissions: [
       {
@@ -36,7 +44,7 @@ const cardSchema = new mongoose.Schema(
           default: "Pending",
         },
         sentiment: {
-          type: String, // auto-filled by AI: e.g., "positive", "neutral", "negative"
+          type: String, // e.g. "positive", "neutral", "negative"
         },
         createdAt: {
           type: Date,
@@ -46,7 +54,7 @@ const cardSchema = new mongoose.Schema(
     ],
     creator: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "userModel",
       required: true,
     },
     isActive: {
