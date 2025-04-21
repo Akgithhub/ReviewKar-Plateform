@@ -62,4 +62,3 @@ export const getUserWithDB = async (req, res) => {
     });
   }
 };
-
