@@ -1,0 +1,72 @@
+[
+    {
+        "id": "user_2vtmnnzG20G7Jinu6l7wRbFO99z",
+        "passwordEnabled": false,
+        "totpEnabled": false,
+        "backupCodeEnabled": false,
+        "twoFactorEnabled": false,
+        "banned": false,
+        "createdAt": 1744972913270,
+        "updatedAt": 1744972913298,
+        "imageUrl": "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2ltYWdlcy5jbGVyay5kZXYvb2F1dGhfZ29vZ2xlL2ltZ18ydnRtbmtJdGV5UXJ5c0pXd0NqUWVHNmo5N1YifQ",
+        "hasImage": true,
+        "primaryEmailAddressId": "idn_2vtmlEkAabRJMLWM0diVaQh6i5c",
+        "primaryPhoneNumberId": null,
+        "primaryWeb3WalletId": null,
+        "lastSignInAt": 1744972913287,
+        "externalId": null,
+        "username": "user1",
+        "firstName": "Amaan",
+        "lastName": "Khan",
+        "publicMetadata": {},
+        "privateMetadata": {},
+        "unsafeMetadata": {},
+        "emailAddresses": [
+            {
+                "id": "idn_2vtmlEkAabRJMLWM0diVaQh6i5c",
+                "emailAddress": "amaan07devloper@gmail.com",
+                "verification": {
+                    "status": "verified",
+                    "strategy": "from_oauth_google",
+                    "externalVerificationRedirectURL": null,
+                    "attempts": null,
+                    "expireAt": null,
+                    "nonce": null
+                },
+                "linkedTo": [
+                    {
+                        "id": "idn_2vtmlDvzSdHR5frtUiE0LDqxKD6",
+                        "type": "oauth_google"
+                    }
+                ]
+            }
+        ],
+        "phoneNumbers": [],
+        "web3Wallets": [],
+        "externalAccounts": [
+            {
+                "id": "idn_2vtmlDvzSdHR5frtUiE0LDqxKD6",
+                "provider": "oauth_google",
+                "identificationId": "idn_2vtmlDvzSdHR5frtUiE0LDqxKD6",
+                "externalId": "102067229858428508753",
+                "approvedScopes": "email https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile openid profile",
+                "emailAddress": "amaan07devloper@gmail.com",
+                "firstName": "Amaan",
+                "lastName": "Khan",
+                "imageUrl": "https://img.clerk.com/eyJ0eXBlIjoicHJveHkiLCJzcmMiOiJodHRwczovL2xoMy5nb29nbGV1c2VyY29udGVudC5jb20vYS9BQ2c4b2NMWlJTX05NbmV5N0RLQlRvWTl1N0N0czVtZXZxVm1rb2xCOUdMZV9YT05UaG5hREE9czEwMDAtYyIsInMiOiI5elY1L2hnYmdkL3JWaVNxSk1obGNCdjlDNjJzdnphVzI0WFJGUmdsSUkwIn0",
+                "username": null,
+                "publicMetadata": {},
+                "label": null,
+                "verification": {
+                    "status": "verified",
+                    "strategy": "oauth_google",
+                    "externalVerificationRedirectURL": null,
+                    "attempts": null,
+                    "expireAt": 1744973487582,
+                    "nonce": null
+                }
+            }
+        ],
+        "createOrganizationEnabled": true
+    }
+]
