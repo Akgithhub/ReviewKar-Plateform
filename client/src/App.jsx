@@ -8,6 +8,8 @@ import Reviews from "./Pages/Reviews";
 import Earn from "./Pages/Earn";
 import Catogery from "./pages/Catogery";
 import CatogeryReview from "./pages/CatogeryReview";
+import { useEffect } from "react";
+import { useAuth } from "@clerk/clerk-react";
 const App = () => {
   return (
     <>

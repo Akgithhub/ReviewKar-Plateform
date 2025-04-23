@@ -1,4 +1,7 @@
 import { Router } from "express";
 import { syncUserWithDB } from "../controller/syncController.js";
+import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node"; 
+
 export const syncRouter = Router();
-syncRouter.get("/user-synced", syncUserWithDB);
+
+syncRouter.post("/user-synced", ClerkExpressRequireAuth(), syncUserWithDB);

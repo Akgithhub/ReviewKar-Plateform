@@ -1,5 +1,6 @@
 import { Router } from "express";
 import { createCard } from "../controller/cardController.js";
-import { clerkClient, requireAuth, getAuth } from '@clerk/express'
+import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node"; 
+
 export const cardRouter = Router();
-cardRouter.post("/create-card",  requireAuth(),createCard)
+cardRouter.post("/create-card", ClerkExpressRequireAuth(),createCard)

@@ -26,12 +26,12 @@ app.use(clerkMiddleware({ secretKey: process.env.CLERK_PUBLISHABLE_KEY }));
 app.use(express.json());
 
 // Protect routes with Clerk authentication
-// app.use(ClerkExpressRequireAuth());
+app.use(ClerkExpressRequireAuth());
 
 // Routes
 app.use("/api/user", userRouter);
 app.use("/api/card", cardRouter);
-app.use("/api/webhooks",syncRouter)
+app.use("/api/syncuser",syncRouter)
 
 // Root route
 app.get("/", (req, res) => {
@@ -40,5 +40,5 @@ app.get("/", (req, res) => {
 
 // Start server
 app.listen(port, () => {
-  console.log(`Server is running at port ${port}`);
+  console.log(`Server is running at http://localhost:${port}`);
 });
