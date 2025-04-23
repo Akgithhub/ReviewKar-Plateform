@@ -20,11 +20,13 @@ const TokenDebugger = () => {
   useEffect(() => {
     const fetchToken = async () => {
       if (isSignedIn) {
-        const token = await getToken();
+        const token = await getToken({ template: "ReviewKartoken" });
+        // const token = await getToken();
         console.log("🔑 Your Clerk JWT Token:", token);
       } else {
         console.log("❌ Not signed in");
       }
+
     };
 
     fetchToken();

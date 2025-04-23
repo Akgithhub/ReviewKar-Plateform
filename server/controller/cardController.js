@@ -1,9 +1,9 @@
 import cardModel from "../model/cardModel.js";
 import userModel from "../model/authModel.js";
 import { clerkClient, getAuth } from "@clerk/express";
-export const createCard = async () => {
+export const createCard = async (req,res) => {
   const userId = req.auth.userId; // Get the Clerk userId
-  const { title, content } = req.body;
+  const { title, description } = req.body;
 
   try {
     // Step 1: Find or create the user in your DB
@@ -14,7 +14,7 @@ export const createCard = async () => {
     }
 
     // Step 2: Create the card and associate with user
-    const newCard = new Card({ title, content, userId });
+    const newCard = new cardModel({ title, description, userId });
     const savedCard = await newCard.save();
 
     // Step 3: Push the card ID to the user's cards array
