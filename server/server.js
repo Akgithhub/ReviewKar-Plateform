@@ -3,6 +3,8 @@ import express from "express";
 import { configDotenv } from "dotenv";
 import dbConnect from "./helper/dbConnect.js";
 import { userRouter } from "./routes/authRoute.js";
+import { cardRouter } from "./routes/cardRoute.js";
+import { syncRouter } from "./routes/syncRoute.js";
 import { clerkMiddleware } from "@clerk/express";
 import {ClerkExpressRequireAuth} from "@clerk/clerk-sdk-node"
 import dotenv from "dotenv";
@@ -28,6 +30,8 @@ app.use(express.json());
 
 // Routes
 app.use("/api/user", userRouter);
+app.use("/api/card", cardRouter);
+app.use("/api/webhooks",syncRouter)
 
 // Root route
 app.get("/", (req, res) => {
