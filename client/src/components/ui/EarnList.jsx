@@ -1,9 +1,9 @@
 import React from "react";
-
+import uniqid from 'uniqid';
 const EarnList = () => {
   const CardData = [
     {
-      id: 1,
+      id: uniqid(),
       title: "Head1",
       description:
         "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
@@ -12,7 +12,7 @@ const EarnList = () => {
       date: "20 Dec, 2017",
     },
     {
-      id: 2,
+      id: uniqid(),
       title: "Head",
       description:
         "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
@@ -21,7 +21,7 @@ const EarnList = () => {
       date: "20 Dec, 2017",
     },
     {
-      id: 3,
+      id: uniqid(),
       title: "Head",
       description:
         "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
@@ -30,7 +30,7 @@ const EarnList = () => {
       date: "20 Dec, 2017",
     },
     {
-      id: 4,
+      id: uniqid(),
       title: "Head",
       description:
         "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
@@ -39,7 +39,7 @@ const EarnList = () => {
       date: "20 Dec, 2017",
     },
     {
-      id: 5,
+      id: uniqid(),
       title: "Head",
       description:
         "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
@@ -48,7 +48,7 @@ const EarnList = () => {
       date: "20 Dec, 2017",
     },
     {
-      id: 6,
+      id: uniqid(),
       title: "Head",
       description:
         "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
@@ -57,7 +57,7 @@ const EarnList = () => {
       date: "20 Dec, 2017",
     },
     {
-      id: 7,
+      id: uniqid(),
       title: "Head6",
       description:
         "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",

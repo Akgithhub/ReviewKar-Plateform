@@ -26,7 +26,7 @@ app.use(clerkMiddleware({ secretKey: process.env.CLERK_PUBLISHABLE_KEY }));
 app.use(express.json());
 
 // Protect routes with Clerk authentication
-app.use(ClerkExpressRequireAuth());
+// app.use(ClerkExpressRequireAuth());
 
 // Routes
 app.use("/api/user", userRouter);

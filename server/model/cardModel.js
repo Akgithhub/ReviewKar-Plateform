@@ -55,7 +55,6 @@ const cardSchema = new mongoose.Schema(
     creator: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "userModel",
-      required: true,
     },
     isActive: {
       type: Boolean,

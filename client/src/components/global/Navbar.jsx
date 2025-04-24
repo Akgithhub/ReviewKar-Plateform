@@ -9,27 +9,34 @@ import {
   SignInButton,
   UserButton,
 } from "@clerk/clerk-react";
+import uniqid from "uniqid";
+import { useSelector, useDispatch } from "react-redux";
+import { setUser } from "@/redux/slices/userSlice";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeItem, setactiveItem] = useState("home");
+  const dispatch = useDispatch();
+  const user = useSelector((state) => state.user);
+  // Dispatch user data
+  // dispatch(setUser({ name: 'Aman', clerkId: '123' }));
   const reviewDropDownList = [
-    { id: 1, name: "Restaurants", link: "/reviews/restaurants" },
-    { id: 2, name: "Hotels", link: "/reviews/hotels" },
-    { id: 3, name: "Clothing", link: "/reviews/clothing" },
-    { id: 3, name: "Movies", link: "/reviews/movies" },
-    { id: 4, name: "Beauty", link: "/reviews/beauty" },
-    { id: 5, name: "Teach", link: "/reviews/teach" },
-    { id: 5, name: "Bars", link: "/reviews/bars" },
+    { id: uniqid(), name: "Restaurants", link: "/reviews/restaurants" },
+    { id: uniqid(), name: "Hotels", link: "/reviews/hotels" },
+    { id: uniqid(), name: "Clothing", link: "/reviews/clothing" },
+    { id: uniqid(), name: "Movies", link: "/reviews/movies" },
+    { id: uniqid(), name: "Beauty", link: "/reviews/beauty" },
+    { id: uniqid(), name: "Teach", link: "/reviews/teach" },
+    { id: uniqid(), name: "Bars", link: "/reviews/bars" },
   ];
   const catogeryDropDownList = [
-    { id: 1, name: "Restaurants", link: "/catogery/restaurants" },
-    { id: 2, name: "Hotels", link: "/catogery/hotels" },
-    { id: 3, name: "Clothing", link: "/catogery/clothing" },
-    { id: 3, name: "Movies", link: "/catogery/movies" },
-    { id: 4, name: "Beauty", link: "/catogery/beauty" },
-    { id: 5, name: "Teach", link: "/catogery/teach" },
-    { id: 5, name: "Bars", link: "/catogery/bars" },
+    { id: uniqid(), name: "Restaurants", link: "/catogery/restaurants" },
+    { id: uniqid(), name: "Hotels", link: "/catogery/hotels" },
+    { id: uniqid(), name: "Clothing", link: "/catogery/clothing" },
+    { id: uniqid(), name: "Movies", link: "/catogery/movies" },
+    { id: uniqid(), name: "Beauty", link: "/catogery/beauty" },
+    { id: uniqid(), name: "Teach", link: "/catogery/teach" },
+    { id: uniqid(), name: "Bars", link: "/catogery/bars" },
   ];
 
   const toggleNav = () => {

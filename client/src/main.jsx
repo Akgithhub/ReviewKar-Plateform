@@ -1,7 +1,8 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import { Provider } from "@/components/ui/provider";
+import { Provider as ReduxProvider } from "react-redux";
+import store from "./redux/store";
 import App from "./App.jsx";
 import { ClerkProvider } from "@clerk/clerk-react";
 import { useEffect } from "react";
@@ -26,7 +27,6 @@ const TokenDebugger = () => {
       } else {
         console.log("❌ Not signed in");
       }
-
     };
 
     fetchToken();
@@ -39,8 +39,10 @@ createRoot(document.getElementById("root")).render(
   // <StrictMode>
   <>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
-    <TokenDebugger />
-      <App />
+      <ReduxProvider store={store}>
+        <TokenDebugger />
+        <App />
+      </ReduxProvider>
     </ClerkProvider>
   </>
   // </StrictMode>
