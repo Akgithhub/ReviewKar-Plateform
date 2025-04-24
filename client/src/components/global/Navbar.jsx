@@ -272,7 +272,9 @@ function Navbar() {
             hover:text-black cursor-pointer"
           >
             <SignedOut>
-              <SignInButton />
+              <SignInButton mode="modal">
+                <button>Login</button>
+              </SignInButton>
             </SignedOut>
             <SignedIn>
               <UserButton />
@@ -290,7 +292,9 @@ function Navbar() {
           className="md:hidden text-xl text-white hover:text-black cursor-pointer"
         >
           <SignedOut>
-            <SignInButton />
+            <SignInButton mode="modal">
+              <button>Login</button>
+            </SignInButton>
           </SignedOut>
           <SignedIn>
             <UserButton />

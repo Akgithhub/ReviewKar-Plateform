@@ -6,11 +6,24 @@ import { userRouter } from "./routes/authRoute.js";
 import { cardRouter } from "./routes/cardRoute.js";
 import { syncRouter } from "./routes/syncRoute.js";
 import { clerkMiddleware } from "@clerk/express";
-import {ClerkExpressRequireAuth} from "@clerk/clerk-sdk-node"
+import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
+import cors from "cors";
+import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
+
 // Load environment variables
 configDotenv();
 dotenv.config();
+
+// Set up CORS to allow requests from the client
+app.use(
+  cors({
+    origin: process.env.CLIENT_URL_DEPLOY, // Allow only this origin to access the server
+    methods: ["GET", "POST", "PUT"], // Allow only these methods
+    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+  })
+);
+
 // Create Express app
 const app = express();
 const port = process.env.PORT || 3000;
@@ -31,7 +44,7 @@ app.use(express.json());
 // Routes
 app.use("/api/user", userRouter);
 app.use("/api/card", cardRouter);
-app.use("/api/syncuser",syncRouter)
+app.use("/api/syncuser", syncRouter);
 
 // Root route
 app.get("/", (req, res) => {
