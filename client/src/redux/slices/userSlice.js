@@ -1,4 +1,3 @@
-// src/redux/slices/userSlice.js
 import { createSlice } from '@reduxjs/toolkit';
 
 const initialState = {
@@ -7,6 +6,8 @@ const initialState = {
   email: '',
   imageUrl: '',
   role: 'user',
+  token: null,        // 🆕 Store the auth token
+  isAuthenticated: false,
 };
 
 const userSlice = createSlice({
@@ -14,15 +15,20 @@ const userSlice = createSlice({
   initialState,
   reducers: {
     setUser(state, action) {
-      state.isAuthenticated = true;
-      state.user = action.payload;
-      return { ...state, ...action.payload };
+      return {
+        ...state,
+        ...action.payload,
+        isAuthenticated: true,
+      };
     },
-    logoutUser(state) {
+    setToken(state, action) {
+      state.token = action.payload;
+    },
+    logoutUser() {
       return initialState;
     },
   },
 });
 
-export const { setUser, logoutUser } = userSlice.actions;
+export const { setUser, logoutUser, setToken } = userSlice.actions;
 export default userSlice.reducer;

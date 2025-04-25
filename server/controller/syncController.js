@@ -9,7 +9,7 @@ export const syncUserWithDB = async (req, res) => {
     console.log("Clerk User : ", clerkUser);
     const existing = await userModel.findOne({ userId });
     if (!existing) {
-      const newUser = new userModel({
+      newUser = new userModel({
         clerkId: clerkUser.id,
         userId,
         email: clerkUser.emailAddresses[0].emailAddress,
@@ -19,9 +19,8 @@ export const syncUserWithDB = async (req, res) => {
         cards: [],
       });
       await newUser.save();
+      res.status(200).json({ message: "User synced", data: newUser });
     }
-
-    res.status(200).json({ message: "User synced" });
   } catch (err) {
     console.error(err);
     res.status(500).json({ message: "Failed to sync user" });

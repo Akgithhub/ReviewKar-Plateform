@@ -8,38 +8,36 @@ import { syncRouter } from "./routes/syncRoute.js";
 import { clerkMiddleware } from "@clerk/express";
 import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 import cors from "cors";
-import cookieParser from "cookie-parser";
 import dotenv from "dotenv";
 
 // Load environment variables
 configDotenv();
 dotenv.config();
-
+// Create Express app
+const app = express();
+const port = process.env.PORT || 3001;
 // Set up CORS to allow requests from the client
 app.use(
   cors({
-    origin: process.env.CLIENT_URL_DEPLOY, // Allow only this origin to access the server
-    methods: ["GET", "POST", "PUT"], // Allow only these methods
-    credentials: true, // Allow credentials (cookies, authorization headers, etc.)
+    origin: "http://localhost:5173", // Change this to your frontend URL
+    credentials: true, // Allow sending cookies
+    httpOnly: true,
+    methods: "GET,POST,PUT,DELETE,PATCH",
   })
 );
-
-// Create Express app
-const app = express();
-const port = process.env.PORT || 3000;
 
 // Connect to database
 dbConnect();
 
 // Clerk middleware (authentication layer)
 app.use(clerkMiddleware({ secretKey: process.env.CLERK_SECRET_KEY }));
-app.use(clerkMiddleware({ secretKey: process.env.CLERK_PUBLISHABLE_KEY }));
+// app.use(clerkMiddleware({ secretKey: process.env.CLERK_PUBLISHABLE_KEY }));
 
 // JSON body parsing
 app.use(express.json());
 
 // Protect routes with Clerk authentication
-// app.use(ClerkExpressRequireAuth());
+app.use(ClerkExpressRequireAuth());
 
 // Routes
 app.use("/api/user", userRouter);
