@@ -15,32 +15,32 @@ if (!PUBLISHABLE_KEY) {
   throw new Error("Missing Publishable Key");
 }
 // Utility to log the token in the browser console
-const TokenDebugger = () => {
-  const { getToken, isSignedIn } = useAuth();
+// const TokenDebugger = () => {
+//   const { getToken, isSignedIn } = useAuth();
 
-  useEffect(() => {
-    const fetchToken = async () => {
-      if (isSignedIn) {
-        const token = await getToken({ template: "ReviewKartoken" });
-        // const token = await getToken();
-        console.log("🔑 Your Clerk JWT Token:", token);
-      } else {
-        console.log("❌ Not signed in");
-      }
-    };
+//   useEffect(() => {
+//     const fetchToken = async () => {
+//       if (isSignedIn) {
+//         const token = await getToken({ template: "ReviewKartoken" });
+//         // const token = await getToken();
+//         console.log("🔑 Your Clerk JWT Token:", token);
+//       } else {
+//         console.log("❌ Not signed in");
+//       }
+//     };
 
-    fetchToken();
-  }, [isSignedIn]);
+//     fetchToken();
+//   }, [isSignedIn]);
 
-  return null; // No UI needed
-};
+//   return null; // No UI needed
+// };
 // Initialize Clerk
 createRoot(document.getElementById("root")).render(
   // <StrictMode>
   <>
     <ClerkProvider publishableKey={PUBLISHABLE_KEY} afterSignOutUrl="/">
       <ReduxProvider store={store}>
-        <TokenDebugger />
+        {/* <TokenDebugger /> */}
         <App />
       </ReduxProvider>
     </ClerkProvider>
