@@ -4,45 +4,66 @@ import { clerkClient } from "@clerk/clerk-sdk-node";
 export const syncUserWithDB = async (req, res) => {
   try {
     // 1. Get the token from the Authorization header
-    const token = req.headers.authorization?.split(" ")[1]; // Extract token from "Bearer <token>"
-    console.log("Token: ", token);  // Log the token
+    const token = req.headers.authorization?.split(" ")[1];
+    console.log("Token received: ", token ? "✓" : "✗");
 
     if (!token) {
       return res.status(400).json({ message: "No token provided" });
     }
 
-    // 2. Use Clerk's SDK to verify the token (optional but recommended for safety)
-    // You can verify the token using Clerk's SDK if you want to make sure it's valid
-    try {
-      await clerkClient.users.verifyToken(token); // Verifies if the token is valid
-    } catch (error) {
-      return res.status(401).json({ message: "Invalid token" });
+    // 2. Get the userId from the authenticated user context provided by Clerk middleware
+    const userId = req.auth.userId;
+    console.log("UserId extracted: ", userId);
+
+    if (!userId) {
+      return res.status(401).json({ message: "User ID not found in authentication context" });
     }
 
-    // 3. Proceed with your logic after token verification
-    const userId = req.auth.userId; // Get the userId from the authenticated user
-    console.log("UserId : ", userId);
-    const clerkUser = await clerkClient.users.getUser(userId); // Get full user data
-    console.log("Clerk User : ", clerkUser);
-
-    const existing = await userModel.findOne({ userId });
-    if (!existing) {
-      const newUser = new userModel({
-        clerkId: clerkUser.id,
-        userId,
-        email: clerkUser.emailAddresses[0].emailAddress,
-        firstName: clerkUser.firstName,
-        lastName: clerkUser.lastName,
-        imageUrl: clerkUser.imageUrl,
-        cards: [],
-      });
-      await newUser.save();
-      res.status(200).json({ message: "User synced", data: newUser });
-    } else {
-      res.status(200).json({ message: "User already synced", data: existing });
+    // 3. Get user details from Clerk
+    try {
+      const clerkUser = await clerkClient.users.getUser(userId);
+      console.log("Clerk user fetched successfully:", clerkUser.id);
+      
+      // 4. Check if user exists in our database
+      const existingUser = await userModel.findOne({ clerkId: userId });
+      
+      if (!existingUser) {
+        // 5. If user doesn't exist, create a new user in our DB with the correct schema fields
+        const newUser = new userModel({
+          clerkId: userId,
+          email: clerkUser.emailAddresses[0].emailAddress,
+          name: `${clerkUser.firstName} ${clerkUser.lastName || ''}`.trim(),
+          imageUrl: clerkUser.imageUrl,
+          cards: [],
+          role: "user",
+          createdAt: new Date()
+        });
+        
+        await newUser.save();
+        console.log("✅ New user created in database:", userId);
+        res.status(201).json({ 
+          message: "User synced successfully", 
+          data: newUser 
+        });
+      } else {
+        // 6. Update existing user with latest info from Clerk
+        existingUser.email = clerkUser.emailAddresses[0].emailAddress;
+        existingUser.name = `${clerkUser.firstName} ${clerkUser.lastName || ''}`.trim();
+        existingUser.imageUrl = clerkUser.imageUrl;
+        
+        await existingUser.save();
+        console.log("✅ Existing user updated in database:", userId);
+        res.status(200).json({ 
+          message: "User data refreshed", 
+          data: existingUser 
+        });
+      }
+    } catch (error) {
+      console.error("❌ Error retrieving user from Clerk:", error);
+      return res.status(500).json({ message: "Failed to retrieve user details", error: error.message });
     }
   } catch (err) {
-    console.error(err);
-    res.status(500).json({ message: "Failed to sync user" });
+    console.error("❌ Sync error:", err);
+    res.status(500).json({ message: "Failed to sync user", error: err.message });
   }
 };

@@ -6,7 +6,6 @@ import { userRouter } from "./routes/authRoute.js";
 import { cardRouter } from "./routes/cardRoute.js";
 import { syncRouter } from "./routes/syncRoute.js";
 import { clerkMiddleware } from "@clerk/express";
-import { ClerkExpressRequireAuth } from "@clerk/clerk-sdk-node";
 import cors from "cors";
 import dotenv from "dotenv";
 
@@ -35,9 +34,6 @@ app.use(clerkMiddleware({ secretKey: process.env.CLERK_SECRET_KEY }));
 
 // JSON body parsing
 app.use(express.json());
-
-// Protect routes with Clerk authentication
-app.use(ClerkExpressRequireAuth());
 
 // Routes
 app.use("/api/user", userRouter);
