@@ -1,13 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Layout from "./Layout";
-import Home from "./Pages/Home";
-import About from "./Pages/About";
-import Pricing from "./Pages/Pricing";
-import Reviews from "./Pages/Reviews";
-import Earn from "./Pages/Earn";
+import Home from "./pages/Home";
+import About from "./pages/About";
+import Pricing from "./pages/Pricing";
+import Reviews from "./pages/Reviews";
+import Earn from "./pages/Earn";
 import Catogery from "./pages/Catogery";
 import CatogeryReview from "./pages/CatogeryReview";
+
 const App = () => {
   return (
     <>
