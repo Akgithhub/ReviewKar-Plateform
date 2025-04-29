@@ -1,69 +1,53 @@
 import userModel from "../model/authModel.js";
-import { clerkClient } from "@clerk/clerk-sdk-node";
+import { clerkClient } from "@clerk/express";
 
 export const syncUserWithDB = async (req, res) => {
   try {
-    // 1. Get the token from the Authorization header
-    const token = req.headers.authorization?.split(" ")[1];
-    console.log("Token received: ", token ? "✓" : "✗");
+    // Step 1: Extract the userId from the authenticated request
+    const { clerkId, name, email, imageUrl, role } = req.body;
+    // console.log(clerkId);
 
-    if (!token) {
-      return res.status(400).json({ message: "No token provided" });
+    if (!clerkId) {
+      // console.log("❌ Authentication failed");
+      return res.status(401).json({ message: "Unauthorized" });
     }
 
-    // 2. Get the userId from the authenticated user context provided by Clerk middleware
-    const userId = req.auth.userId;
-    console.log("UserId extracted: ", userId);
+    // console.log("✅ Authenticated Clerk UserID:", clerkId);
 
-    if (!userId) {
-      return res.status(401).json({ message: "User ID not found in authentication context" });
+    // Step 2: Retrieve user details from the request body
+
+    if (!clerkId || !name || !email) {
+      return res.status(400).json({ message: "Missing user data in request" });
     }
 
-    // 3. Get user details from Clerk
-    try {
-      const clerkUser = await clerkClient.users.getUser(userId);
-      console.log("Clerk user fetched successfully:", clerkUser.id);
-      
-      // 4. Check if user exists in our database
-      const existingUser = await userModel.findOne({ clerkId: userId });
-      
-      if (!existingUser) {
-        // 5. If user doesn't exist, create a new user in our DB with the correct schema fields
-        const newUser = new userModel({
-          clerkId: userId,
-          email: clerkUser.emailAddresses[0].emailAddress,
-          name: `${clerkUser.firstName} ${clerkUser.lastName || ''}`.trim(),
-          imageUrl: clerkUser.imageUrl,
-          cards: [],
-          role: "user",
-          createdAt: new Date()
-        });
-        
-        await newUser.save();
-        console.log("✅ New user created in database:", userId);
-        res.status(201).json({ 
-          message: "User synced successfully", 
-          data: newUser 
-        });
-      } else {
-        // 6. Update existing user with latest info from Clerk
-        existingUser.email = clerkUser.emailAddresses[0].emailAddress;
-        existingUser.name = `${clerkUser.firstName} ${clerkUser.lastName || ''}`.trim();
-        existingUser.imageUrl = clerkUser.imageUrl;
-        
-        await existingUser.save();
-        console.log("✅ Existing user updated in database:", userId);
-        res.status(200).json({ 
-          message: "User data refreshed", 
-          data: existingUser 
-        });
-      }
-    } catch (error) {
-      console.error("❌ Error retrieving user from Clerk:", error);
-      return res.status(500).json({ message: "Failed to retrieve user details", error: error.message });
+    // Step 3: Check if the user already exists in the database
+    let user = await userModel.findOne({ clerkId });
+
+    if (!user) {
+      // Create a new user
+      user = await userModel.create({
+        clerkId,
+        name,
+        email,
+        imageUrl,
+        role,
+      });
+
+      // console.log("✅ New user created:", user);
+    } else {
+      // Update existing user details
+      user.name = name;
+      user.email = email;
+      user.imageUrl = imageUrl;
+      user.role = role;
+      await user.save();
+
+      // console.log("♻️ Existing user updated:", user);
     }
-  } catch (err) {
-    console.error("❌ Sync error:", err);
-    res.status(500).json({ message: "Failed to sync user", error: err.message });
+
+    return res.status(200).json({ message: "User synced successfully", user });
+  } catch (error) {
+    // console.error("❌ Error syncing user:", error);
+    return res.status(500).json({ message: "Internal server error" });
   }
 };
