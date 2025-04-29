@@ -273,7 +273,7 @@ function Navbar() {
           >
             <SignedOut>
               <SignInButton mode="modal">
-                <button>Login</button>
+              <img src="./log-in.svg" alt="" />
               </SignInButton>
             </SignedOut>
             <SignedIn>
@@ -293,7 +293,7 @@ function Navbar() {
         >
           <SignedOut>
             <SignInButton mode="modal">
-              <button>Login</button>
+             <img src="./log-in.svg" alt="" />
             </SignInButton>
           </SignedOut>
           <SignedIn>

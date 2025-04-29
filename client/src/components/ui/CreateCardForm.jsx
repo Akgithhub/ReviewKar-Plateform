@@ -1,13 +1,20 @@
 import { useState } from "react";
-// import axios from "axios";
+import { useAuth, useUser } from "@clerk/clerk-react";
+import { useDispatch } from "react-redux";
+// import { setUser } from "../redux/slices/userSlice";
+import axios from "axios";
 
 const CreateCardForm = () => {
+  const { isSignedIn } = useAuth();
+  const { user } = useUser();
+  const dispatch = useDispatch();
+  const [error, setError] = useState(null);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
-    category: "Product",
+    category: "",
     imageUrl: "",
-    rewardAmount: 10,
+    rewardAmount: "",
     totalReviewsNeeded: "",
     companyName: "",
   });
@@ -37,13 +44,25 @@ const CreateCardForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    // try {
-    //   const res = await axios.post("/api/cards/create", formData);
-    //   alert("Card created successfully!");
-    // } catch (error) {
-    //   console.error(error);
-    //   alert("Something went wrong!");
-    // }
+    try {
+      const clerkid = user.id;
+      console.log(clerkid);
+
+      const payload = {
+        cardata: {
+          title: formData.title,
+          description: formData.description,
+        },
+        userId: clerkid,
+      };
+
+      const api = `${import.meta.env.VITE_API_URL}/api/card/create-card`;
+      const res = await axios.post(api, payload);
+      console.log("Response from server:", res.data);
+    } catch (error) {
+      console.error("Error syncing user data:", error);
+      setError("Failed to create card. Please try again.");
+    }
   };
 
   return (
@@ -96,7 +115,7 @@ const CreateCardForm = () => {
       <div>
         <label
           className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          for="user_avatar"
+          htmlFor="user_avatar"
         >
           Upload file
         </label>
@@ -104,7 +123,9 @@ const CreateCardForm = () => {
           type="file"
           accept="image/*"
           onChange={handleImageUpload}
-          className="block py-4 px-2 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400" aria-describedby="user_avatar_help" id="user_avatar"
+          className="block py-4 px-2 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
+          aria-describedby="user_avatar_help"
+          id="user_avatar"
         />
         <div
           className="mt-1 text-sm text-gray-500 dark:text-gray-300"
@@ -121,7 +142,7 @@ const CreateCardForm = () => {
         )}
       </div>
 
-      <div>
+      {/* <div>
         <label className="block text-sm font-medium">Reward Amount (₹)</label>
         <input
           type="number"
@@ -131,7 +152,7 @@ const CreateCardForm = () => {
           min={1}
           className="w-full p-2 border rounded-lg"
         />
-      </div>
+      </div> */}
 
       <div>
         <label className="block text-sm font-medium">
@@ -142,7 +163,7 @@ const CreateCardForm = () => {
           name="totalReviewsNeeded"
           value={formData.totalReviewsNeeded}
           onChange={handleChange}
-          required
+          // required
           min={1}
           className="w-full p-2 border rounded-lg"
         />
@@ -155,7 +176,7 @@ const CreateCardForm = () => {
           name="companyName"
           value={formData.companyName}
           onChange={handleChange}
-          required
+          // required
           className="w-full p-2 border rounded-lg"
         />
       </div>

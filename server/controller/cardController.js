@@ -2,15 +2,22 @@ import cardModel from "../model/cardModel.js";
 import userModel from "../model/authModel.js";
 
 export const createCard = async (req, res) => {
-  const clerkId = req.auth.userId; // Clerk user ID
-  const { title, description } = req.body;
+  // const clerkId = "user_2w7mBhusLABHplC5XHEcqQvg2hV"; // Clerk user ID
+  // const { title, description, userId } = req.body;
+  const { cardata, userId } = req.body; // ✅ Get card data and Clerk ID
+  console.log("Clerk ID:", userId);
+
+  const { title, description } = cardata;
+  console.log(title);
+  console.log(description);
 
   try {
     // 1. Find user in DB using clerkId
-    const user = await userModel.findOne({ clerkId });
+    const user = await userModel.findOne({ userId });
     if (!user) {
       return res.status(404).json({ message: "User not found in database" });
     }
+    console.log("userfound");
 
     // 2. Create card with user's MongoDB _id as creator
     const newCard = await cardModel.create({

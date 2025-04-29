@@ -9,6 +9,7 @@ import Earn from "./pages/Earn";
 import Catogery from "./pages/Catogery";
 import CatogeryReview from "./pages/CatogeryReview";
 
+
 const App = () => {
   return (
     <>

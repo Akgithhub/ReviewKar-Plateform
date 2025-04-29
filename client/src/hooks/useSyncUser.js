@@ -10,7 +10,8 @@ const useSyncUser = () => {
   const dispatch = useDispatch();
   const [isSyncing, setIsSyncing] = useState(false);
   const [error, setError] = useState(null);
-  const api = "http://localhost:3001/api/syncuser/user-synced";
+  // const api = "http://localhost:3001/api/syncuser/user-synced";
+  const api = `${import.meta.env.VITE_API_URL}/api/syncuser/user-synced`;
 
   useEffect(() => {
     const sync = async () => {
@@ -23,20 +24,14 @@ const useSyncUser = () => {
 
       try {
         const token = await getToken({ template: "ReviewKartoken" });
-        console.log("Token retrieved:", token ? "Successfully" : "Failed");
-        console.log("User: ", user);
+        // console.log("Token retrieved:", token ? "Successfully" : "Failed");
+        // console.log("User: ", user);
+        // console.log(api2);
+        
 
         if (!token) {
           throw new Error("Failed to retrieve authentication token");
         }
-
-        const payload = {
-          clerkId: user.id, // 📦 Send the Clerk ID in the body
-          name: user.fullName,
-          email: user.primaryEmailAddress.emailAddress,
-          imageUrl: user.imageUrl,
-          role: 'user', // You can adjust role if needed
-        };
 
         const res = await axios.post(
           api,
