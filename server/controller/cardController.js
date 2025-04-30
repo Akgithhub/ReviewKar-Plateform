@@ -15,7 +15,15 @@ export const createCard = async (req, res) => {
       return res.status(400).json({ message: "Missing card data or user ID" });
     }
 
-    const { title, description } = cardata;
+    const {
+      title,
+      description,
+      imageUrl,
+      category,
+      rewardAmount,
+      totalReviewsNeeded,
+      companyName,
+    } = cardata;
 
     if (!title || !description) {
       return res
@@ -37,6 +45,11 @@ export const createCard = async (req, res) => {
       title,
       description,
       creator: user._id,
+      imageUrl,
+      category,
+      rewardAmount,
+      totalReviewsNeeded,
+      companyName,
     });
 
     // 3. Link card to user

@@ -1,14 +1,16 @@
 import { useState } from "react";
 import { useAuth, useUser } from "@clerk/clerk-react";
-import { useDispatch } from "react-redux";
-// import { setUser } from "../redux/slices/userSlice";
+import { useDispatch, useSelector } from "react-redux";
+import { categories } from "../../constents/categories.js";
 import axios from "axios";
+import UploadImageCardCreation from "../ui/UploadImageCardCreation";
 
 const CreateCardForm = () => {
   const { isSignedIn } = useAuth();
   const { user } = useUser();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
+  const imageUrlFromRedux = useSelector((state) => state.user.imageUrl);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -18,6 +20,7 @@ const CreateCardForm = () => {
     totalReviewsNeeded: "",
     companyName: "",
   });
+  const categoryOptions = [];
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -30,48 +33,44 @@ const CreateCardForm = () => {
     }));
   };
 
-  const handleImageUpload = async (e) => {
-    // const file = e.target.files[0];
-    // // Replace with your actual ImageKit logic here
-    // const data = new FormData();
-    // data.append("file", file);
-    // data.append("upload_preset", "your_upload_preset");
-    // // Example: Assuming you upload to ImageKit or Cloudinary and get a URL back
-    // const res = await axios.post("YOUR_IMAGEKIT_API_URL", data);
-    // const imageUrl = res.data.url;
-    // setFormData((prev) => ({ ...prev, imageUrl }));
-  };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     // Check if user is signed in
     if (!isSignedIn || !user) {
       setError("You must be signed in to create a card.");
       return;
     }
-  
+
     const clerkId = user.id;
-  
+
     // Basic form validation
     const { title, description } = formData;
     if (!title.trim() || !description.trim()) {
       setError("Both title and description are required.");
       return;
     }
-  
+
     const payload = {
       cardata: {
         title: title.trim(),
         description: description.trim(),
+        imageUrl: imageUrlFromRedux,
+        category: formData.category,
+        rewardAmount: formData.rewardAmount,
+        totalReviewsNeeded: formData.totalReviewsNeeded,
+        companyName: formData.companyName,
       },
       userId: clerkId,
     };
-  
+console.log("Payload:", payload);
+
     try {
-      const createCardApi = `${import.meta.env.VITE_API_URL}/api/card/create-card`;
+      const createCardApi = `${
+        import.meta.env.VITE_API_URL
+      }/api/card/create-card`;
       const res = await axios.post(createCardApi, payload);
-  
+
       if (res.status === 201) {
         console.log("Card created successfully:", res.data.card);
         setError(""); // clear previous error
@@ -83,11 +82,11 @@ const CreateCardForm = () => {
     } catch (error) {
       console.error("Error creating card:", error);
       setError(
-        error.response?.data?.message || "Failed to create card. Please try again."
+        error.response?.data?.message ||
+          "Failed to create card. Please try again."
       );
     }
   };
-  
 
   return (
     <form
@@ -127,44 +126,18 @@ const CreateCardForm = () => {
           onChange={handleChange}
           className="w-full p-2 border rounded-lg"
         >
-          <option>Product</option>
-          <option>Restaurant</option>
-          <option>Hotel</option>
-          <option>Clothing</option>
-          <option>Service</option>
-          <option>Other</option>
+          <option value="">Select a category</option>
+          {categories.map((cat, i) => (
+            <option key={i} value={cat}>
+              {cat}
+            </option>
+          ))}
         </select>
       </div>
 
-      <div>
-        <label
-          className="block mb-2 text-sm font-medium text-gray-900 dark:text-white"
-          htmlFor="user_avatar"
-        >
-          Upload file
-        </label>
-        <input
-          type="file"
-          accept="image/*"
-          onChange={handleImageUpload}
-          className="block py-4 px-2 w-full text-sm text-gray-900 border border-gray-300 rounded-lg cursor-pointer bg-gray-50 dark:text-gray-400 focus:outline-none dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
-          aria-describedby="user_avatar_help"
-          id="user_avatar"
-        />
-        <div
-          className="mt-1 text-sm text-gray-500 dark:text-gray-300"
-          id="user_avatar_help"
-        >
-          Card Image
-        </div>
-        {formData.imageUrl && (
-          <img
-            src={formData.imageUrl}
-            alt="Preview"
-            className="mt-2 w-40 h-40 object-cover rounded-lg"
-          />
-        )}
-      </div>
+    
+        <UploadImageCardCreation />
+     
 
       {/* <div>
         <label className="block text-sm font-medium">Reward Amount (₹)</label>

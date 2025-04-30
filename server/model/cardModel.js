@@ -12,7 +12,6 @@ const cardSchema = new mongoose.Schema(
     },
     category: {
       type: String,
-      enum: ["Product", "Restaurant", "Hotel", "Clothing", "Service", "Other"],
     //   required: true,
     },
     imageUrl: {

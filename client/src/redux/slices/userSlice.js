@@ -4,7 +4,7 @@ const initialState = {
   clerkId: null,
   name: '',
   email: '',
-  imageUrl: '',
+  imageUrl: undefined,
   role: 'user',
   token: null,        // 🆕 Store the auth token
   isAuthenticated: false,

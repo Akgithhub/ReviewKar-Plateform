@@ -12,10 +12,13 @@ import {
 import uniqid from "uniqid";
 import { useSelector, useDispatch } from "react-redux";
 import { setUser } from "@/redux/slices/userSlice";
+import { useAuth, useUser } from "@clerk/clerk-react";
 
 function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [activeItem, setactiveItem] = useState("home");
+  const { isSignedIn } = useAuth();
+  const { isUser } = useUser();
   const dispatch = useDispatch();
   const user = useSelector((state) => state.user);
   // Dispatch user data
@@ -41,6 +44,9 @@ function Navbar() {
 
   const toggleNav = () => {
     setIsOpen(!isOpen);
+    if (isOpen) {
+      document.body.getElementById("mobile-menu").style.backgroundColor = "white"; // Enable scrolling
+    }
   };
 
   const changeBG = () => {
@@ -200,7 +206,6 @@ function Navbar() {
               </div>
             </div>
           </li>
-
           <li className="relative group">
             <Link
               to="/catogery"
@@ -238,7 +243,6 @@ function Navbar() {
               </div>
             </div>
           </li>
-
           <li>
             <Link
               to="/pricing"
@@ -262,10 +266,23 @@ function Navbar() {
           <button className="bg-gray-900 text-white rounded hover:bg-gray-800 py-2 px-4">
             <Link to="/pricing">Get Reviews</Link>
           </button>
-          {/* <FiLogOut
-            id="logout-icon-desktop"
-            className="text-xl text-white hover:text-black cursor-pointer"
-          /> */}
+          {isSignedIn || isUser ? (
+            <>
+              <div className="relative group inline-block">
+                <button className="bg-blue-500 text-white rounded hover:bg-blue-600 py-2 px-4">
+                  <Link to="/">
+                    <img src="./my-card.svg" alt="My Cards" />
+                  </Link>
+                </button>
+                <div className="absolute top-full mt-2 left-1/2 transform -translate-x-1/2 bg-black text-white text-xs rounded py-3 px-4 min-w-[100px] text-center opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                  My Cards
+                </div>
+              </div>
+            </>
+          ) : (
+            ""
+          )}
+
           <div
             id="logout-icon-desktop"
             className="text-xl text-white
@@ -273,7 +290,7 @@ function Navbar() {
           >
             <SignedOut>
               <SignInButton mode="modal">
-              <img src="./log-in.svg" alt="" />
+                <img src="./log-in.svg" alt="" />
               </SignInButton>
             </SignedOut>
             <SignedIn>
@@ -282,18 +299,14 @@ function Navbar() {
           </div>
         </div>
 
-        {/* Mobile Logout Icon */}
-        {/* <FiLogOut
-          id="logout-icon-mobile"
-          className="md:hidden text-xl text-white hover:text-black cursor-pointer"
-        /> */}
+        {/* Mobile Auth Icon */}
         <div
           id="logout-icon-mobile"
           className="md:hidden text-xl text-white hover:text-black cursor-pointer"
         >
           <SignedOut>
             <SignInButton mode="modal">
-             <img src="./log-in.svg" alt="" />
+              <img src="./log-in.svg" alt="" />
             </SignInButton>
           </SignedOut>
           <SignedIn>
@@ -304,7 +317,7 @@ function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div className="md:hidden bg-white mt-4 flex flex-col gap-4 text-[17px] font-semibold text-gray-700">
+        <div id="mobile-menu" className="md:hidden bg-white mt-4 flex flex-col gap-4 text-[17px] font-semibold text-gray-700">
           <Link
             to="/"
             className={
@@ -382,6 +395,15 @@ function Navbar() {
           <button className="bg-gray-900 text-white rounded hover:bg-gray-800 py-2 px-4">
             <Link to="/pricing">Get Reviews</Link>
           </button>
+          {isSignedIn || isUser ? (
+            <>
+              <button className="bg-blue-500 text-white rounded hover:bg-blue-600 py-2 px-4">
+                <Link to="/">My Cards</Link>
+              </button>
+            </>
+          ) : (
+            ""
+          )}
         </div>
       )}
     </nav>
