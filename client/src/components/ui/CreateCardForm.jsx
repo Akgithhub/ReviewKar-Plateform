@@ -44,33 +44,50 @@ const CreateCardForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const clerkid = user.id;
-    // console.log(clerkid);
-    const payload = {
-      cardata: {
-        title: formData.title,
-        description: formData.description,
-      },
-      userId: clerkid,
-    };
+  
+    // Check if user is signed in
     if (!isSignedIn || !user) {
       setError("You must be signed in to create a card.");
       return;
     }
-    // console.log(payload.cardata);
-    // console.log(payload.userId);
-    // const api = "http://localhost:3001/api/card/create-card";
+  
+    const clerkId = user.id;
+  
+    // Basic form validation
+    const { title, description } = formData;
+    if (!title.trim() || !description.trim()) {
+      setError("Both title and description are required.");
+      return;
+    }
+  
+    const payload = {
+      cardata: {
+        title: title.trim(),
+        description: description.trim(),
+      },
+      userId: clerkId,
+    };
+  
     try {
-      const createCardapi = `${import.meta.env.VITE_API_URL}/api/card/create-card`;
-      // console.log(createCardapi);
-      const res = await axios.post(createCardapi, payload);
-      // console.log("Response from server:", res.data);
-      
+      const createCardApi = `${import.meta.env.VITE_API_URL}/api/card/create-card`;
+      const res = await axios.post(createCardApi, payload);
+  
+      if (res.status === 201) {
+        console.log("Card created successfully:", res.data.card);
+        setError(""); // clear previous error
+        // Optionally: reset form or show success message
+      } else {
+        console.warn("Unexpected response:", res);
+        setError("Something went wrong. Please try again.");
+      }
     } catch (error) {
-      console.error("Error syncing user data:", error);
-      setError("Failed to create card. Please try again.");
+      console.error("Error creating card:", error);
+      setError(
+        error.response?.data?.message || "Failed to create card. Please try again."
+      );
     }
   };
+  
 
   return (
     <form

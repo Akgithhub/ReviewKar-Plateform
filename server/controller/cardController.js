@@ -18,14 +18,18 @@ export const createCard = async (req, res) => {
     const { title, description } = cardata;
 
     if (!title || !description) {
-      return res.status(400).json({ message: "Title and description are required" });
+      return res
+        .status(400)
+        .json({ message: "Title and description are required" });
     }
 
     // 1. Find the user by Clerk ID
     const user = await userModel.findOne({ clerkId: userId });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found in the database" });
+      return res
+        .status(404)
+        .json({ message: "User not found in the database" });
     }
 
     // 2. Create a new card
