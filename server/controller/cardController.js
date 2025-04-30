@@ -1,32 +1,41 @@
 import cardModel from "../model/cardModel.js";
 import userModel from "../model/authModel.js";
 
+/**
+ * @desc    Create a new card and link it to a user
+ * @route   POST /api/card/create-card
+ * @access  Public (or Protected if using auth middleware)
+ */
 export const createCard = async (req, res) => {
-  // const clerkId = "user_2w7mBhusLABHplC5XHEcqQvg2hV"; // Clerk user ID
-  // const { title, description, userId } = req.body;
-  const { cardata, userId } = req.body; // ✅ Get card data and Clerk ID
-  console.log("Clerk ID:", userId);
-
-  const { title, description } = cardata;
-  console.log(title);
-  console.log(description);
-
   try {
-    // 1. Find user in DB using clerkId
-    const user = await userModel.findOne({ userId });
-    if (!user) {
-      return res.status(404).json({ message: "User not found in database" });
-    }
-    console.log("userfound");
+    const { cardata, userId } = req.body;
 
-    // 2. Create card with user's MongoDB _id as creator
+    // Validation
+    if (!cardata || !userId) {
+      return res.status(400).json({ message: "Missing card data or user ID" });
+    }
+
+    const { title, description } = cardata;
+
+    if (!title || !description) {
+      return res.status(400).json({ message: "Title and description are required" });
+    }
+
+    // 1. Find the user by Clerk ID
+    const user = await userModel.findOne({ clerkId: userId });
+
+    if (!user) {
+      return res.status(404).json({ message: "User not found in the database" });
+    }
+
+    // 2. Create a new card
     const newCard = await cardModel.create({
       title,
       description,
       creator: user._id,
     });
 
-    // 3. Push card reference to user
+    // 3. Link card to user
     user.cards.push(newCard._id);
     await user.save();
 
@@ -35,25 +44,36 @@ export const createCard = async (req, res) => {
       message: "Card created and linked to user successfully",
       card: newCard,
     });
-  } catch (err) {
-    console.error("Error creating card:", err);
-    return res.status(500).json({ message: "Internal server error" });
+  } catch (error) {
+    console.error("Error creating card:", error.message);
+    return res.status(500).json({
+      message: "Server error while creating card",
+      error: error.message,
+    });
   }
 };
+
+/**
+ * @desc    Get all cards
+ * @route   GET /api/card/all
+ * @access  Public (or Protected if needed)
+ */
 export const getAllCard = async (req, res) => {
   try {
-    const cards = await cardModel.find();
+    const cards = await cardModel.find().populate("creator", "name email");
+
     if (!cards || cards.length === 0) {
       return res.status(404).json({ message: "No cards found" });
     }
+
     res.status(200).json({
       message: "Cards fetched successfully",
-      cards: cards,
+      cards,
     });
   } catch (error) {
-    console.error(error.message);
+    console.error("Error fetching cards:", error.message);
     res.status(500).json({
-      message: "Error getting all cards",
+      message: "Server error while fetching cards",
       error: error.message,
     });
   }

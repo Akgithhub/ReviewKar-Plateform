@@ -3,5 +3,6 @@ import { createCard, getAllCard } from "../controller/cardController.js";
 import { clerkMiddleware } from "@clerk/express";
 
 export const cardRouter = Router();
-cardRouter.post("/create-card",clerkMiddleware(),createCard)
+// cardRouter.post("/create-card",clerkMiddleware(),createCard)
+cardRouter.post("/create-card", createCard);
 cardRouter.get("/cards",getAllCard)

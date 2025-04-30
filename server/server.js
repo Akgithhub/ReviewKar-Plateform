@@ -35,7 +35,7 @@ app.use(clerkMiddleware({ secretKey: process.env.CLERK_SECRET_KEY }));
 // JSON body parsing
 app.use(express.json());
 // app.use(clerkMiddleware());
-app.use(clerkMiddleware({ authorizedParties: ['http://localhost:5173/'] }));
+// app.use(clerkMiddleware({ authorizedParties: ['http://localhost:5173/'] }));
 
 // Routes
 app.use("/api/user", userRouter);

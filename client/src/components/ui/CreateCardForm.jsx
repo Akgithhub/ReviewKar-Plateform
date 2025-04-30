@@ -44,21 +44,28 @@ const CreateCardForm = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    const clerkid = user.id;
+    // console.log(clerkid);
+    const payload = {
+      cardata: {
+        title: formData.title,
+        description: formData.description,
+      },
+      userId: clerkid,
+    };
+    if (!isSignedIn || !user) {
+      setError("You must be signed in to create a card.");
+      return;
+    }
+    // console.log(payload.cardata);
+    // console.log(payload.userId);
+    // const api = "http://localhost:3001/api/card/create-card";
     try {
-      const clerkid = user.id;
-      console.log(clerkid);
-
-      const payload = {
-        cardata: {
-          title: formData.title,
-          description: formData.description,
-        },
-        userId: clerkid,
-      };
-
-      const api = `${import.meta.env.VITE_API_URL}/api/card/create-card`;
-      const res = await axios.post(api, payload);
-      console.log("Response from server:", res.data);
+      const createCardapi = `${import.meta.env.VITE_API_URL}/api/card/create-card`;
+      // console.log(createCardapi);
+      const res = await axios.post(createCardapi, payload);
+      // console.log("Response from server:", res.data);
+      
     } catch (error) {
       console.error("Error syncing user data:", error);
       setError("Failed to create card. Please try again.");
