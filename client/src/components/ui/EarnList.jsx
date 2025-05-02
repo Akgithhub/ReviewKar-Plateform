@@ -1,5 +1,8 @@
 import React from "react";
-import uniqid from 'uniqid';
+import uniqid from "uniqid";
+import { useEffect } from "react";
+import { IKImage } from "imagekitio-react";
+import axios from "axios";
 const EarnList = () => {
   const CardData = [
     {
@@ -16,56 +19,24 @@ const EarnList = () => {
       title: "Head",
       description:
         "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
-        image: "./pricing-hero.jpg",
-      category: "Category",
-      date: "20 Dec, 2017",
-    },
-    {
-      id: uniqid(),
-      title: "Head",
-      description:
-        "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
-        image: "./pricing-hero.jpg",
-      category: "Category",
-      date: "20 Dec, 2017",
-    },
-    {
-      id: uniqid(),
-      title: "Head",
-      description:
-        "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
-        image: "./pricing-hero.jpg",
-      category: "Category",
-      date: "20 Dec, 2017",
-    },
-    {
-      id: uniqid(),
-      title: "Head",
-      description:
-        "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
-        image: "./pricing-hero.jpg",
-      category: "Category",
-      date: "20 Dec, 2017",
-    },
-    {
-      id: uniqid(),
-      title: "Head",
-      description:
-        "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
-        image: "./pricing-hero.jpg",
-      category: "Category",
-      date: "20 Dec, 2017",
-    },
-    {
-      id: uniqid(),
-      title: "Head6",
-      description:
-        "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
-        image: "./pricing-hero.jpg",
+      image: "./pricing-hero.jpg",
       category: "Category",
       date: "20 Dec, 2017",
     },
   ];
+  useEffect(() => {
+    const fetchCards = async () => {
+      try {
+        const getAllCardsApi = `${import.meta.env.VITE_API_URL}/api/card/cards`;
+        const res = await axios.get(getAllCardsApi);
+        console.log(res.data); // make sure this is the correct path
+      } catch (error) {
+        console.error("Error fetching cards:", error.message);
+      }
+    };
+
+    fetchCards();
+  }, []);
   return (
     <section className="bg-gray-100 py-12">
       <div className="max-w-7xl mx-auto px-4 lg:px-8 grid grid-cols-1 lg:grid-cols-4 gap-8">
@@ -87,21 +58,22 @@ const EarnList = () => {
                   <div className="text-sm text-gray-500">
                     {card.category} - {card.date}
                   </div>
-                  <h3 className="text-lg font-semibold text-gray-800 mt-2">{card.title}</h3>
+                  <h3 className="text-lg font-semibold text-gray-800 mt-2">
+                    {card.title}
+                  </h3>
                   <p className="text-sm text-gray-600 mt-2">
-                  {card.description}
+                    {card.description}
                   </p>
                   <div className="mt-4 flex items-center justify-between text-sm text-gray-400">
                     <div className="flex items-center gap-2">
-                      <div className="w-6 h-6 bg-gray-300 rounded-full"></div> Admin
+                      <div className="w-6 h-6 bg-gray-300 rounded-full"></div>{" "}
+                      Admin
                     </div>
                     <span>12k</span>
                   </div>
                 </div>
               </div>
             ))}
-            {/* <!-- Repeat 5 more cards similarly... --> */}
-            {/* <!-- You can loop these in your backend or JS --> */}
           </div>
 
           {/* <!-- Pagination --> */}
