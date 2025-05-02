@@ -77,9 +77,9 @@ export const createCard = async (req, res) => {
  */
 export const getAllCard = async (req, res) => {
   try {
-    const cards = await cardModel.find().populate("creator", "name email");
+    const cards = await cardModel.find();
 
-    if (!cards || cards.length === 0) {
+    if (!cards) {
       return res.status(404).json({ message: "No cards found" });
     }
 
@@ -109,7 +109,6 @@ export const deleteCard = async (req, res) => {
     const userId = "6814538b66ad060dceb6f7bf";
     console.log("User ID:", userId);
     console.log("Card ID:", cardId);
-    
 
     // Step 1: Validate input
     if (!cardId || !userId) {
@@ -140,12 +139,139 @@ export const deleteCard = async (req, res) => {
       card: deletedCard,
       user: updatedUser,
     });
-
   } catch (error) {
     // Step 7: Handle any server-side errors
     console.error("Error deleting card:", error.message);
     return res.status(500).json({
       message: "Server error while deleting card.",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * @desc    Update a card's details
+ * @route   PUT /api/card/update/:id
+ * @access  Protected (Assuming middleware sets req.user)
+ */
+
+export const updateCard = async (req, res) => {
+  try {
+    // Temporary static user ID for testing purposes
+    const userId = "6814538b66ad060dceb6f7bf";
+    const cardId = req.params.id;
+    const newCardData = req.body;
+
+    console.log("User ID:", userId);
+    console.log("Card ID:", cardId);
+
+    // Step 1: Validate required IDs
+    if (!cardId || !userId) {
+      return res.status(400).json({
+        message: "Card ID and User ID are required or not found.",
+      });
+    }
+
+    // Step 2: Check if the card exists in the database
+    const card = await cardModel.findById(cardId);
+    if (!card) {
+      return res.status(404).json({ message: "Card not found." });
+    }
+
+    // Step 3: Update the card with the provided new data
+    const updatedCard = await cardModel.findByIdAndUpdate(cardId, newCardData, {
+      new: true, // Return the updated document
+      runValidators: true, // Ensure updated fields meet schema validation
+    });
+
+    // Step 4: Return success response
+    return res.status(200).json({
+      message: "Card updated successfully.",
+      card: updatedCard,
+    });
+  } catch (error) {
+    // Step 5: Handle unexpected server errors
+    console.error("Error updating card:", error.message);
+    return res.status(500).json({
+      message: "Server error while updating card.",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * @desc    Get a single card by its ID
+ * @route   GET /api/card/:id
+ * @access  Public or Protected (based on implementation)
+ */
+
+export const getCardById = async (req, res) => {
+  try {
+    const cardId = req.params.id;
+
+    // Step 1: Validate card ID
+    if (!cardId) {
+      return res.status(400).json({ message: "Card ID is required." });
+    }
+
+    // Step 2: Find the card by ID in the database
+    const card = await cardModel.findById(cardId);
+    if (!card) {
+      return res.status(404).json({ message: "Card not found." });
+    }
+
+    // Step 3: Send the card data in response
+    return res.status(200).json({
+      message: "Card fetched successfully.",
+      card,
+    });
+  } catch (error) {
+    // Step 4: Handle server errors
+    console.error("Error fetching card by ID:", error.message);
+    return res.status(500).json({
+      message: "Server error while fetching card by ID.",
+      error: error.message,
+    });
+  }
+};
+
+/**
+ * @desc    Get all cards associated with a specific user by user ID
+ * @route   GET /api/card/user
+ * @access  Protected (requires authentication, currently uses static ID for testing)
+ */
+
+export const getCardsByUserId = async (req, res) => {
+  try {
+    // Temporary static user ID for testing purposes
+    const userId = "6814538b66ad060dceb6f7bf";
+
+    // Step 1: Validate user ID
+    if (!userId) {
+      return res.status(400).json({ message: "User ID is required." });
+    }
+
+    // Step 2: Fetch the user from the database
+    const user = await userModel.findById(userId);
+    if (!user) {
+      return res.status(404).json({ message: "User not found." });
+    }
+
+    // Step 3: Extract card IDs from the user's document and fetch the corresponding cards
+    const cardsId = user.cards;
+    const cards = await cardModel.find({ _id: { $in: cardsId } });
+
+    // Step 4: Return the cards in response
+    return res.status(200).json({
+      message: "Cards fetched successfully.",
+      cards,
+    });
+
+  } catch (error) {
+    // Step 5: Handle server errors
+    console.error("Error fetching cards by user ID:", error.message);
+    return res.status(500).json({
+      message: "Server error while fetching cards by user ID.",
       error: error.message,
     });
   }
