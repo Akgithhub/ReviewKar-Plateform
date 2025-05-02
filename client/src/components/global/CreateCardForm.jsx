@@ -2,15 +2,17 @@ import { useState } from "react";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { useDispatch, useSelector } from "react-redux";
 import { categories } from "../../constents/categories.js";
+import { setUser } from "@/redux/slices/userSlice.js";
 import axios from "axios";
-import UploadImageCardCreation from "../ui/UploadImageCardCreation";
+import UploadImageCardCreation from "../../constents/UploadImageCardCreation.jsx";
 
 const CreateCardForm = () => {
   const { isSignedIn } = useAuth();
   const { user } = useUser();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
-  const imageUrlFromRedux = useSelector((state) => state.user.imageUrl);
+  const [resetImage, setResetImage] = useState(false);
+  let imageUrlFromRedux = useSelector((state) => state.user.imageUrl);
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -20,8 +22,6 @@ const CreateCardForm = () => {
     totalReviewsNeeded: "",
     companyName: "",
   });
-  const categoryOptions = [];
-
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData((prev) => ({
@@ -32,25 +32,20 @@ const CreateCardForm = () => {
           : value,
     }));
   };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
-
-    // Check if user is signed in
+  
     if (!isSignedIn || !user) {
       setError("You must be signed in to create a card.");
       return;
     }
-
-    const clerkId = user.id;
-
-    // Basic form validation
+  
     const { title, description } = formData;
     if (!title.trim() || !description.trim()) {
       setError("Both title and description are required.");
       return;
     }
-
+  
     const payload = {
       cardata: {
         title: title.trim(),
@@ -61,32 +56,37 @@ const CreateCardForm = () => {
         totalReviewsNeeded: formData.totalReviewsNeeded,
         companyName: formData.companyName,
       },
-      userId: clerkId,
+      userId: user.id,
     };
-console.log("Payload:", payload);
-
+  
     try {
-      const createCardApi = `${
-        import.meta.env.VITE_API_URL
-      }/api/card/create-card`;
+      const createCardApi = `${import.meta.env.VITE_API_URL}/api/card/create-card`;
       const res = await axios.post(createCardApi, payload);
-
       if (res.status === 201) {
         console.log("Card created successfully:", res.data.card);
-        setError(""); // clear previous error
-        // Optionally: reset form or show success message
+        setError("");
+        setFormData({
+          title: "",
+          description: "",
+          category: "",
+          imageUrl: "",
+          rewardAmount: "",
+          totalReviewsNeeded: "",
+          companyName: "",
+        });
+        dispatch(setUser({ imageUrl: "" })); // Clear the image URL from Redux
       } else {
-        console.warn("Unexpected response:", res);
         setError("Something went wrong. Please try again.");
       }
     } catch (error) {
       console.error("Error creating card:", error);
       setError(
         error.response?.data?.message ||
-          "Failed to create card. Please try again."
+        "Failed to create card. Please try again."
       );
     }
   };
+  
 
   return (
     <form
@@ -135,21 +135,7 @@ console.log("Payload:", payload);
         </select>
       </div>
 
-    
-        <UploadImageCardCreation />
-     
-
-      {/* <div>
-        <label className="block text-sm font-medium">Reward Amount (₹)</label>
-        <input
-          type="number"
-          name="rewardAmount"
-          value={formData.rewardAmount}
-          onChange={handleChange}
-          min={1}
-          className="w-full p-2 border rounded-lg"
-        />
-      </div> */}
+      <UploadImageCardCreation />
 
       <div>
         <label className="block text-sm font-medium">

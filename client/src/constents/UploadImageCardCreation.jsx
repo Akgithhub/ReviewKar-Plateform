@@ -1,19 +1,15 @@
 import React, { useState } from "react";
 import { IKContext, IKUpload } from "imagekitio-react";
 import { useDispatch, useSelector } from "react-redux";
-import { setUser } from "../../redux/slices/userSlice";
+import { setUser } from "../redux/slices/userSlice";
 
 const UploadImageCardCreation = () => {
   const dispatch = useDispatch();
   const urlEndpoint = import.meta.env.VITE_IMAGE_KIT_ENDPOINT;
   const publicKey = import.meta.env.VITE_IMAGE_KIT_PUBLIC_KEY;
-
   const [uploadError, setUploadError] = useState(null);
   const [previewImageUrl, setPreviewImageUrl] = useState(null);
   const [isImageLoading, setIsImageLoading] = useState(false); // 👈 new state
-
-  const imageUrlFromRedux = useSelector((state) => state.user.imageUrl);
-
   const authenticator = async () => {
     const imageUploadApi = `${import.meta.env.VITE_API_URL}/upload`;
     try {
@@ -29,7 +25,6 @@ const UploadImageCardCreation = () => {
       throw error;
     }
   };
-
   const onSuccess = (res) => {
     console.log("Uploaded Image URL:", res.url);
     dispatch(setUser({ imageUrl: res.url }));
@@ -37,12 +32,10 @@ const UploadImageCardCreation = () => {
     setIsImageLoading(true); // 👈 start loading when image URL is set
     setUploadError(null);
   };
-
   const onError = (err) => {
     console.error("Upload Error:", err);
     setUploadError("Failed to upload image. Please try again.");
   };
-
   const previewImage = (res) => {
     console.log("Uploaded Image URL:", res.url);
     setPreviewImageUrl(res.url);
