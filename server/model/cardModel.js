@@ -14,6 +14,9 @@ const cardSchema = new mongoose.Schema(
       type: String,
     //   required: true,
     },
+    categorySlug: {
+      type: String,
+    },
     imageUrl: {
       type: String, // Will store the ImageKit URL
     },

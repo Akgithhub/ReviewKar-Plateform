@@ -3,14 +3,15 @@ import userModel from "../model/authModel.js";
 
 /**
  * @desc    Create a new card and link it to a user
- * @route   POST /api/card/create-card
- * @access  Public (or Protected if using auth middleware)
+ * @route   POST /api/card/create
+ * @access  Protected (requires authentication)
  */
+
 export const createCard = async (req, res) => {
   try {
     const { cardata, userId } = req.body;
 
-    // Validation
+    // Step 1: Validate input
     if (!cardata || !userId) {
       return res.status(400).json({ message: "Missing card data or user ID" });
     }
@@ -31,36 +32,42 @@ export const createCard = async (req, res) => {
         .json({ message: "Title and description are required" });
     }
 
-    // 1. Find the user by Clerk ID
+    // Step 2: Find the user by Clerk ID
     const user = await userModel.findOne({ clerkId: userId });
 
     if (!user) {
-      return res
-        .status(404)
-        .json({ message: "User not found in the database" });
+      return res.status(404).json({ message: "User not found in the database" });
     }
 
-    // 2. Create a new card
+    // Step 3: Generate a slug from category
+    const categorySlug = category
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, '-')    // Replace non-alphanumerics with hyphens
+      .replace(/^-+|-+$/g, '');       // Remove leading/trailing hyphens
+
+    // Step 4: Create a new card
     const newCard = await cardModel.create({
       title,
       description,
       creator: user._id,
       imageUrl,
       category,
+      categorySlug, // store the slug version of category
       rewardAmount,
       totalReviewsNeeded,
       companyName,
     });
 
-    // 3. Link card to user
+    // Step 5: Link card to the user's cards array
     user.cards.push(newCard._id);
     await user.save();
 
-    // 4. Respond with success
+    // Step 6: Respond with success
     return res.status(201).json({
       message: "Card created and linked to user successfully",
       card: newCard,
     });
+
   } catch (error) {
     console.error("Error creating card:", error.message);
     return res.status(500).json({
@@ -69,6 +76,7 @@ export const createCard = async (req, res) => {
     });
   }
 };
+
 
 /**
  * @desc    Get all cards
@@ -266,7 +274,6 @@ export const getCardsByUserId = async (req, res) => {
       message: "Cards fetched successfully.",
       cards,
     });
-
   } catch (error) {
     // Step 5: Handle server errors
     console.error("Error fetching cards by user ID:", error.message);
@@ -277,3 +284,31 @@ export const getCardsByUserId = async (req, res) => {
   }
 };
 
+export const getCardByCategory = async (req, res) => {
+  try {
+    const categorySlug = req.params.category;
+
+    // Step 1: Validate category
+    if (!categorySlug) {
+      return res.status(400).json({ message: "Category is required." });
+    }
+
+    // Step 2: Fetch cards by category from the database
+    const cards = await cardModel.find({ categorySlug });
+    if (!cards || cards.length === 0) {
+      return res.status(404).json({ message: "No cards found in this category." });
+    }
+
+    // Step 3: Return the cards in response
+    return res.status(200).json({
+      message: "Cards fetched successfully.",
+      cards,
+    });
+  } catch (error) {
+    console.error("Error fetching cards by category:", error.message);
+    return res.status(500).json({
+      message: "Server error while fetching cards by category.",
+      error: error.message,
+    });
+  }
+};
