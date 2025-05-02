@@ -34,18 +34,18 @@ const CreateCardForm = () => {
   };
   const handleSubmit = async (e) => {
     e.preventDefault();
-  
+
     if (!isSignedIn || !user) {
       setError("You must be signed in to create a card.");
       return;
     }
-  
+
     const { title, description } = formData;
     if (!title.trim() || !description.trim()) {
       setError("Both title and description are required.");
       return;
     }
-  
+
     const payload = {
       cardata: {
         title: title.trim(),
@@ -58,9 +58,11 @@ const CreateCardForm = () => {
       },
       userId: user.id,
     };
-  
+
     try {
-      const createCardApi = `${import.meta.env.VITE_API_URL}/api/card/create-card`;
+      const createCardApi = `${
+        import.meta.env.VITE_API_URL
+      }/api/card/create-card`;
       const res = await axios.post(createCardApi, payload);
       if (res.status === 201) {
         console.log("Card created successfully:", res.data.card);
@@ -82,11 +84,10 @@ const CreateCardForm = () => {
       console.error("Error creating card:", error);
       setError(
         error.response?.data?.message ||
-        "Failed to create card. Please try again."
+          "Failed to create card. Please try again."
       );
     }
   };
-  
 
   return (
     <form
@@ -158,6 +159,17 @@ const CreateCardForm = () => {
           type="text"
           name="companyName"
           value={formData.companyName}
+          onChange={handleChange}
+          // required
+          className="w-full p-2 border rounded-lg"
+        />
+      </div>
+      <div>
+        <label className="block text-sm font-medium">Reward Amount</label>
+        <input
+          type="number"
+          name="rewardAmount"
+          value={formData.rewardAmount}
           onChange={handleChange}
           // required
           className="w-full p-2 border rounded-lg"

@@ -1,9 +1,13 @@
 import React from "react";
 import uniqid from "uniqid";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { IKImage } from "imagekitio-react";
 import axios from "axios";
 const EarnList = () => {
+  const [cards, setCards] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [user, setUser] = useState(null);
+  const [error, setError] = useState(null);
   const CardData = [
     {
       id: uniqid(),
@@ -30,6 +34,9 @@ const EarnList = () => {
         const getAllCardsApi = `${import.meta.env.VITE_API_URL}/api/card/cards`;
         const res = await axios.get(getAllCardsApi);
         console.log(res.data); // make sure this is the correct path
+        setCards(res.data.cards);
+        setLoading(false);
+        setUser(res.data.user);
       } catch (error) {
         console.error("Error fetching cards:", error.message);
       }
@@ -44,6 +51,42 @@ const EarnList = () => {
         <div className="lg:col-span-3 space-y-10">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             {/* <!-- Card --> */}
+            {cards.map((card, index) => (
+              <div
+                key={index}
+                className="bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition"
+              >
+                <img
+                  src={card.imageUrl}
+                  alt=""
+                  className="w-full h-48 object-cover"
+                />
+                <div className="p-5">
+                  <div className="text-sm text-gray-500">
+                    {card.category} - {card.companyName}
+                  </div>
+                  <h3 className="text-lg font-semibold text-gray-800 mt-2">
+                    {card.title}
+                  </h3>
+                  <p className="text-sm text-gray-600 mt-2">
+                    {card.description}
+                  </p>
+                  <p className="text-sm text-gray-600 mt-2">
+                    Total Reviews Needed - {card.totalReviewsNeeded}
+                  </p>
+                  <div className="mt-4 flex items-center justify-between text-sm text-gray-400">
+                    <div className="flex items-center gap-2">
+                      <img
+                        src={card.creator.imageUrl}
+                        className="w-6 h-6 bg-gray-300 rounded-full"
+                      />
+                      {card.creator.name}
+                    </div>
+                    <div>{card.rewardAmount}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
             {CardData.map((card, index) => (
               <div
                 key={index}

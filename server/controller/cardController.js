@@ -37,14 +37,16 @@ export const createCard = async (req, res) => {
     const user = await userModel.findOne({ clerkId: userId });
 
     if (!user) {
-      return res.status(404).json({ message: "User not found in the database" });
+      return res
+        .status(404)
+        .json({ message: "User not found in the database" });
     }
 
     // Step 3: Generate a slug from category
     const categorySlug = category
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')    // Replace non-alphanumerics with hyphens
-      .replace(/^-+|-+$/g, '');       // Remove leading/trailing hyphens
+      .replace(/[^a-z0-9]+/g, "-") // Replace non-alphanumerics with hyphens
+      .replace(/^-+|-+$/g, ""); // Remove leading/trailing hyphens
 
     // Step 4: Create a new card
     const newCard = await cardModel.create({
@@ -68,7 +70,6 @@ export const createCard = async (req, res) => {
       message: "Card created and linked to user successfully",
       card: newCard,
     });
-
   } catch (error) {
     console.error("Error creating card:", error.message);
     return res.status(500).json({
@@ -86,15 +87,15 @@ export const createCard = async (req, res) => {
  */
 export const getAllCard = async (req, res) => {
   try {
-    const cards = await cardModel.find();
+    const cards = await cardModel.find().populate("creator", "name email imageUrl"); // Populate creator details
 
-    if (!cards) {
+    if (!cards || cards.length === 0) {
       return res.status(404).json({ message: "No cards found" });
     }
 
     res.status(200).json({
       message: "Cards fetched successfully",
-      cards,
+      cards, // each card now includes its creator info
     });
   } catch (error) {
     console.error("Error fetching cards:", error.message);
@@ -104,6 +105,8 @@ export const getAllCard = async (req, res) => {
     });
   }
 };
+
+
 
 // ------------------deleteCard-------------------
 /**
@@ -158,7 +161,6 @@ export const deleteCard = async (req, res) => {
     });
   }
 };
-
 
 // ------------------updateCard-------------------
 /**
@@ -311,7 +313,9 @@ export const getCardByCategory = async (req, res) => {
 
     // Step 3: Check if any cards exist in the given category
     if (!cards || cards.length === 0) {
-      return res.status(404).json({ message: "No cards found in this category." });
+      return res
+        .status(404)
+        .json({ message: "No cards found in this category." });
     }
 
     // Step 4: Send the matching cards in the response
@@ -319,7 +323,6 @@ export const getCardByCategory = async (req, res) => {
       message: "Cards fetched successfully.",
       cards,
     });
-
   } catch (error) {
     console.error("Error fetching cards by category:", error.message);
     return res.status(500).json({
@@ -328,4 +331,3 @@ export const getCardByCategory = async (req, res) => {
     });
   }
 };
-
