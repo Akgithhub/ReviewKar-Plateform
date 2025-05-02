@@ -1,6 +1,7 @@
 import cardModel from "../model/cardModel.js";
 import userModel from "../model/authModel.js";
 
+// ------------------createCard-------------------
 /**
  * @desc    Create a new card and link it to a user
  * @route   POST /api/card/create
@@ -77,7 +78,7 @@ export const createCard = async (req, res) => {
   }
 };
 
-
+// ------------------getAllCard-------------------
 /**
  * @desc    Get all cards
  * @route   GET /api/card/all
@@ -104,6 +105,7 @@ export const getAllCard = async (req, res) => {
   }
 };
 
+// ------------------deleteCard-------------------
 /**
  * @desc    Delete a specific card and update the user's card list
  * @route   DELETE /api/card/:_id
@@ -157,6 +159,8 @@ export const deleteCard = async (req, res) => {
   }
 };
 
+
+// ------------------updateCard-------------------
 /**
  * @desc    Update a card's details
  * @route   PUT /api/card/update/:id
@@ -207,6 +211,7 @@ export const updateCard = async (req, res) => {
   }
 };
 
+// ------------------getCardById-------------------
 /**
  * @desc    Get a single card by its ID
  * @route   GET /api/card/:id
@@ -243,6 +248,7 @@ export const getCardById = async (req, res) => {
   }
 };
 
+// ------------------getCardsByUserId-------------------
 /**
  * @desc    Get all cards associated with a specific user by user ID
  * @route   GET /api/card/user
@@ -284,26 +290,36 @@ export const getCardsByUserId = async (req, res) => {
   }
 };
 
+// ------------------getCardByCategory-------------------
+/**
+ * @desc    Get all cards by category slug
+ * @route   GET /api/card/category/:category
+ * @access  Public
+ */
+
 export const getCardByCategory = async (req, res) => {
   try {
     const categorySlug = req.params.category;
 
-    // Step 1: Validate category
+    // Step 1: Validate category slug from URL params
     if (!categorySlug) {
       return res.status(400).json({ message: "Category is required." });
     }
 
-    // Step 2: Fetch cards by category from the database
+    // Step 2: Fetch cards from the database by category slug
     const cards = await cardModel.find({ categorySlug });
+
+    // Step 3: Check if any cards exist in the given category
     if (!cards || cards.length === 0) {
       return res.status(404).json({ message: "No cards found in this category." });
     }
 
-    // Step 3: Return the cards in response
+    // Step 4: Send the matching cards in the response
     return res.status(200).json({
       message: "Cards fetched successfully.",
       cards,
     });
+
   } catch (error) {
     console.error("Error fetching cards by category:", error.message);
     return res.status(500).json({
@@ -312,3 +328,4 @@ export const getCardByCategory = async (req, res) => {
     });
   }
 };
+
