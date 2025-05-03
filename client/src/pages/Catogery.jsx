@@ -11,6 +11,7 @@ const Catogery = () => {
     buttonText: "Search",
     bgImage: "./help-you.jpg",
     inputSection: true,
+    heroImageHeight: "screen",
   };
   const CTAsectionData = {
     title: "Get Paid to Write Reviews",
@@ -29,6 +30,7 @@ const Catogery = () => {
         bgImage={aboutHeroData.bgImage}
         getReviewsButtonText={aboutHeroData.getReviewsButtonText}
         inputSection={aboutHeroData.inputSection}
+        heroImageHeight={aboutHeroData.heroImageHeight}
       />
       <MainCatogery/>
       <AllCategory/>

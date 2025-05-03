@@ -8,6 +8,7 @@ import Reviews from "./pages/Reviews";
 import Earn from "./pages/Earn";
 import Catogery from "./pages/Catogery";
 import CatogeryReview from "./pages/CatogeryReview";
+import MyCards from "./pages/MyCards";
 
 const App = () => {
   return (
@@ -22,6 +23,8 @@ const App = () => {
             <Route path="earn" element={<Earn />} />
             <Route path="catogery" element={<Catogery />} />
             <Route path="single-catogery-review" element={<CatogeryReview />} />
+            <Route path="*" element={<h1>404 Not Found</h1>} />
+            <Route path="/my-cards" element={<MyCards />} />
           </Route>
         </Routes>
       </Router>

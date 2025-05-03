@@ -45,7 +45,8 @@ function Navbar() {
   const toggleNav = () => {
     setIsOpen(!isOpen);
     if (isOpen) {
-      document.body.getElementById("mobile-menu").style.backgroundColor = "white"; // Enable scrolling
+      document.body.getElementById("mobile-menu").style.backgroundColor =
+        "white"; // Enable scrolling
     }
   };
 
@@ -270,7 +271,7 @@ function Navbar() {
             <>
               <div className="relative group inline-block">
                 <button className="bg-blue-500 text-white rounded hover:bg-blue-600 py-2 px-4">
-                  <Link to="/">
+                  <Link to="/my-cards">
                     <img src="./my-card.svg" alt="My Cards" />
                   </Link>
                 </button>
@@ -317,7 +318,10 @@ function Navbar() {
 
       {/* Mobile Menu */}
       {isOpen && (
-        <div id="mobile-menu" className="md:hidden bg-white mt-4 flex flex-col gap-4 text-[17px] font-semibold text-gray-700">
+        <div
+          id="mobile-menu"
+          className="md:hidden bg-white mt-4 flex flex-col gap-4 text-[17px] font-semibold text-gray-700"
+        >
           <Link
             to="/"
             className={

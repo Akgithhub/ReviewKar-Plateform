@@ -8,11 +8,12 @@ const Hero = ({
   getReviewsButtonText,
   earnButtonText,
   inputSection,
+  heroImageHeight
 }) => {
   return (
     <>
       <div
-        className="relative bg-cover bg-center h-screen"
+        className={`relative bg-cover bg-center h-${heroImageHeight}`}
         style={{ backgroundImage: `url('${bgImage}')` }}
       >
         <div className="absolute z-10 inset-0 bg-black/60 flex flex-col justify-center items-center px-4 text-center">

@@ -5,9 +5,11 @@ import { categories } from "../../constents/categories.js";
 import { setUser } from "@/redux/slices/userSlice.js";
 import axios from "axios";
 import UploadImageCardCreation from "../../constents/UploadImageCardCreation.jsx";
+import { useNavigate } from "react-router-dom";
 
 const CreateCardForm = () => {
   const { isSignedIn } = useAuth();
+  const navigate = useNavigate();
   const { user } = useUser();
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
@@ -76,7 +78,8 @@ const CreateCardForm = () => {
           totalReviewsNeeded: "",
           companyName: "",
         });
-        dispatch(setUser({ imageUrl: "" })); // Clear the image URL from Redux
+        // dispatch(setUser({ imageUrl: "" })); // Clear the image URL from Redux
+        navigate("/earn"); // Redirect to the Earn page
       } else {
         setError("Something went wrong. Please try again.");
       }

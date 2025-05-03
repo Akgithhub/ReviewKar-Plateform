@@ -12,19 +12,12 @@ const Home = () => {
     bgImage: "./home_section.jpg",
     getReviewsButtonText: "Get Reviews",
     earnButtonText: "Earn",
-    inputSection:true
+    inputSection: true,
+    heroImageHeight: "screen",
   };
   return (
     <>
-      <Hero
-        title={homeHeroData.title}
-        subtitle={homeHeroData.subtitle}
-        buttonText={homeHeroData.buttonText}
-        bgImage={homeHeroData.bgImage}
-        getReviewsButtonText={homeHeroData.getReviewsButtonText}
-        earnButtonText={homeHeroData.earnButtonText}
-        inputSection={homeHeroData.inputSection}
-      />
+      <Hero {...homeHeroData} />
       <TopCatogery />
       <Latestreview />
       <Helpyou />
