@@ -7,12 +7,11 @@ const ProfileDashboard = () => {
     buttonText: "Edit Profile",
     bgImage: "./pricing-hero.jpg",
     inputSection: false,
-    heroImageHeight: "[90vh]",
   };
   return (
     <div className="text-black rounded-lg mx-auto ">
       {/* Header Section */}
-      <Hero {...profileHeroData} />
+
       <div className="absolute left-6 -bottom-10 z-10">
         <img
           src="https://media.licdn.com/dms/image/v2/D5603AQFifcFvky0BLg/profile-displayphoto-shrink_200_200/B56ZZ2VWLpGkAc-/0/1745742030048?e=1751500800&v=beta&t=UI62V_XJiVEsylzat2bWJKR3N4GN44JXX-qlrTGblVo" // Replace with actual profile image path

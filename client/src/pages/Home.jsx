@@ -13,7 +13,6 @@ const Home = () => {
     getReviewsButtonText: "Get Reviews",
     earnButtonText: "Earn",
     inputSection: true,
-    heroImageHeight: "screen",
   };
   return (
     <>

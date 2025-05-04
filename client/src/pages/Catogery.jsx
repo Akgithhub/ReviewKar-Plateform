@@ -18,23 +18,14 @@ const Catogery = () => {
     subtitle: `Join our community of reviewers and earn rewards for sharing your experiences.`,
     buttonText: "Join Now",
     bgImage: "./help-you.jpg",
-    btnurl:"/pricing"
-
-  }
+    btnurl: "/pricing",
+  };
   return (
     <>
-      <Hero
-        title={aboutHeroData.title}
-        subtitle={aboutHeroData.subtitle}
-        buttonText={aboutHeroData.buttonText}
-        bgImage={aboutHeroData.bgImage}
-        getReviewsButtonText={aboutHeroData.getReviewsButtonText}
-        inputSection={aboutHeroData.inputSection}
-        heroImageHeight={aboutHeroData.heroImageHeight}
-      />
-      <MainCatogery/>
-      <AllCategory/>
-      <CTASection title={CTAsectionData.title} subtitle={CTAsectionData.subtitle} btnText={CTAsectionData.buttonText} btnUrl={CTAsectionData.btnurl}/>
+      <Hero {...aboutHeroData} />
+      <MainCatogery />
+      <AllCategory />
+      <CTASection {...CTAsectionData} />
     </>
   );
 };

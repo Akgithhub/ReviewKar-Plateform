@@ -7,7 +7,6 @@ const About = () => {
     buttonText: "Join Us",
     bgImage: "./help-you.jpg",
     inputSection: false,
-    heroImageHeight: "screen",
   };
   return (
     <>
