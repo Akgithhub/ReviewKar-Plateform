@@ -14,10 +14,10 @@ const initialState = {
   country: '',
   website: '',
   telephone: '',
-  facebook: '',
-  twitter: '',
-  linkedin: '',
-  otherSocial: '',
+  facebookUrl: '',
+  twitterUrl: '',
+  linkedinUrl: '',
+  otherSocialUrl: '',
   isAuthenticated: false,
 };
 
