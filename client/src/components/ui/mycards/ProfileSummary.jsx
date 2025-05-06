@@ -1,5 +1,7 @@
 import React from "react";
 import { FaStar } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
+import { toggleUserDetailsForm } from "@/redux/slices/userSlice";
 // const RatingBar = ({ stars, value, max }) => {
 //   const widthPercent = (value / max) * 100;
 //   return (
@@ -15,8 +17,15 @@ import { FaStar } from "react-icons/fa";
 //   );
 // };
 const ProfileSummary = () => {
+  const [cards, setCards] = React.useState([]);
+  const [loading, setLoading] = React.useState(true);
+  const [error, setError] = React.useState(null);
   const totalReviews = 234;
   const rating = 4.5;
+  const dispatch = useDispatch();
+  const userData = useSelector((state) => state.user);
+  const userDetailsform = useSelector((state) => state.user.userDetailsform);
+  console.log(userData); // <-- Log it
 
   const starCounts = {
     5: 120,
@@ -36,16 +45,30 @@ const ProfileSummary = () => {
           {/* Logo */}
           <div className="w-20 h-20 bg-white  rounded">
             <img
-              src="https://media.licdn.com/dms/image/v2/D5603AQFifcFvky0BLg/profile-displayphoto-shrink_200_200/B56ZZ2VWLpGkAc-/0/1745742030048?e=1751500800&v=beta&t=UI62V_XJiVEsylzat2bWJKR3N4GN44JXX-qlrTGblVo"
+              src={userData.imageUrl}
               alt="Logo"
               className="w-full h-full object-contain"
             />
           </div>
           {/* Details */}
           <div>
-            <p className="text-sm text-gray-300">Shop</p>
-            <h1 className="text-2xl font-bold">Good Electronics</h1>
-            <div className="flex items-center gap-1 mt-2">
+            <p className="text-sm text-gray-300">{userData.name}</p>
+            <div className="flex items-center justify-between gap-4">
+              <h1 className="text-2xl font-bold">Compnay Name or other text</h1>
+              <div className="relative group w-fit">
+                <button
+                  onClick={() =>
+                    dispatch(toggleUserDetailsForm(!userDetailsform))
+                  }
+                >
+                  <img src="./edit.svg" alt="Edit" className="cursor-pointer" />
+                  <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition duration-200 whitespace-nowrap">
+                    Show Form
+                  </span>
+                </button>
+              </div>
+            </div>
+            {/* <div className="flex items-center gap-1 mt-2">
               {[...Array(4)].map((_, i) => (
                 <FaStar key={i} className="text-green-400" />
               ))}
@@ -53,7 +76,7 @@ const ProfileSummary = () => {
               <span className="ml-3 text-sm text-gray-300">
                 {rating.toFixed(2)}/5.00 - based on {totalReviews} reviews
               </span>
-            </div>
+            </div> */}
           </div>
         </div>
 

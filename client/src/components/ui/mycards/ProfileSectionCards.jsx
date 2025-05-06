@@ -1,10 +1,12 @@
 import React from "react";
+import { useState } from "react";
 import {
   FaFacebookF,
   FaTwitter,
   FaLinkedinIn,
   FaShareAlt,
 } from "react-icons/fa";
+import { useDispatch, useSelector } from "react-redux";
 
 const ReviewCard = ({ name, text, reply }) => (
   <div className="bg-white p-4 rounded shadow-sm mb-6">

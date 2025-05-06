@@ -6,7 +6,18 @@ const initialState = {
   email: '',
   imageUrl: undefined,
   role: 'user',
-  token: null,        // 🆕 Store the auth token
+  token: null,
+  company: '',
+  description: '',
+  address: '',
+  city: '',
+  country: '',
+  website: '',
+  telephone: '',
+  facebook: '',
+  twitter: '',
+  linkedin: '',
+  otherSocial: '',
   isAuthenticated: false,
 };
 
@@ -27,8 +38,11 @@ const userSlice = createSlice({
     logoutUser() {
       return initialState;
     },
+    toggleUserDetailsForm(state, action) {
+      state.userDetailsform = action.payload; // ✅ To control visibility
+    },
   },
 });
 
-export const { setUser, logoutUser, setToken } = userSlice.actions;
+export const { setUser, logoutUser, setToken, toggleUserDetailsForm } = userSlice.actions;
 export default userSlice.reducer;

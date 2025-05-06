@@ -1,5 +1,4 @@
 import userModel from "../model/authModel.js";
-import { clerkClient } from "@clerk/express";
 
 export const syncUserWithDB = async (req, res) => {
   try {
@@ -21,7 +20,12 @@ export const syncUserWithDB = async (req, res) => {
     }
 
     // Step 3: Check if the user already exists in the database
-    let user = await userModel.findOne({ clerkId });
+    let user = await userModel
+      .findOne({ clerkId })
+      .populate(
+        "cards",
+        "title description imageUrl category rewardAmount totalReviewsNeeded companyName createdAt updatedAt"
+      );
 
     if (!user) {
       // Create a new user
