@@ -25,7 +25,7 @@ const ProfileSummary = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
   const userDetailsform = useSelector((state) => state.user.userDetailsform);
-  console.log(userData); // <-- Log it
+  // console.log(userData); // <-- Log it
 
   const starCounts = {
     5: 120,
