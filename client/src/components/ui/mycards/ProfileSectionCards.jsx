@@ -91,43 +91,54 @@ const ReviewCard = () => {
     </div>
   );
 };
-const CompanyInfo = () => (
-  <div className="bg-white p-4 shadow-sm rounded">
-    <h3 className="text-xl font-semibold mb-2">Good Electronics</h3>
-    <p className="text-sm text-gray-600 mb-3">
-      Illud scipitent mei ea, te nec sonet partem contentiones.
-    </p>
-    <div className="text-sm text-gray-600 mb-1">
-      <strong>Address:</strong>
-      <br />
-      9785 Baker st. 567
-      <br />
-      Los Angeles - US
-    </div>
-    <div className="text-sm text-gray-600 mb-1">
-      <strong>Website:</strong>
-      <br />
-      <a href="#" className="text-blue-600">
-        goodelectronics.com
-      </a>
-    </div>
-    <div className="text-sm text-gray-600 mb-1">
-      <strong>Email:</strong>
-      <br />
-      info@goodelectronics.com
-    </div>
-    <div className="text-sm text-gray-600 mb-3">
-      <strong>Telephone:</strong>
-      <br />
-      +542 542 566264
-    </div>
-    <div className="flex gap-3 text-gray-500">
-      <FaFacebookF />
-      <FaTwitter />
-      <FaLinkedinIn />
-    </div>
-  </div>
-);
+const CompanyInfo = () => {
+  const userDataCompany = useSelector((state) => state.user);
+
+  useEffect(() => {
+    if (userDataCompany) {
+      console.log(userDataCompany);
+    }
+  }, [userDataCompany]);
+  return (
+    <>
+      <div className="bg-white p-4 shadow-sm rounded">
+        <h3 className="text-xl font-semibold mb-2">Good Electronics</h3>
+        <p className="text-sm text-gray-600 mb-3">
+          Illud scipitent mei ea, te nec sonet partem contentiones.
+        </p>
+        <div className="text-sm text-gray-600 mb-1">
+          <strong>Address:</strong>
+          <br />
+          9785 Baker st. 567
+          <br />
+          Los Angeles - US
+        </div>
+        <div className="text-sm text-gray-600 mb-1">
+          <strong>Website:</strong>
+          <br />
+          <a href="#" className="text-blue-600">
+            goodelectronics.com
+          </a>
+        </div>
+        <div className="text-sm text-gray-600 mb-1">
+          <strong>Email:</strong>
+          <br />
+          info@goodelectronics.com
+        </div>
+        <div className="text-sm text-gray-600 mb-3">
+          <strong>Telephone:</strong>
+          <br />
+          +542 542 566264
+        </div>
+        <div className="flex gap-3 text-gray-500">
+          <FaFacebookF />
+          <FaTwitter />
+          <FaLinkedinIn />
+        </div>
+      </div>
+    </>
+  );
+};
 const Pagination = () => (
   <div className="flex justify-center items-center space-x-2 mt-6">
     {[1, 2, 3, 4].map((num) => (

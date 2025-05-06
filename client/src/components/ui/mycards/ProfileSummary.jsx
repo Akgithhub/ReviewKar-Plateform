@@ -54,7 +54,7 @@ const ProfileSummary = () => {
           <div>
             <p className="text-sm text-gray-300">{userData.name}</p>
             <div className="flex items-center justify-between gap-4">
-              <h1 className="text-2xl font-bold">Compnay Name or other text</h1>
+              <h1 className="text-2xl font-bold">{userData.company}</h1>
               <div className="relative group w-fit">
                 <button
                   onClick={() =>
@@ -68,6 +68,7 @@ const ProfileSummary = () => {
                 </button>
               </div>
             </div>
+            <h1 className="text-[12px] font-bold">{userData.description}</h1>
             {/* <div className="flex items-center gap-1 mt-2">
               {[...Array(4)].map((_, i) => (
                 <FaStar key={i} className="text-green-400" />
