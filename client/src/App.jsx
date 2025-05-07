@@ -10,11 +10,13 @@ import Catogery from "./pages/Catogery";
 import CatogeryReview from "./pages/CatogeryReview";
 import MyCards from "./pages/MyCards";
 
+
 const App = () => {
   return (
     <>
       <Router>
         <Routes>
+      
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />

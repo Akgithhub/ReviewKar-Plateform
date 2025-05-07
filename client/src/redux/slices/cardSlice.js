@@ -1,5 +1,5 @@
 // src/redux/slices/cardSlice.js
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   cards: [],
@@ -8,11 +8,14 @@ const initialState = {
 };
 
 const cardSlice = createSlice({
-  name: 'card',
+  name: "card",
   initialState,
   reducers: {
     setCards(state, action) {
-      state.cards = action.payload;
+      return {
+        ...state,
+        ...action.payload,
+      };
     },
     addCard(state, action) {
       state.cards.push(action.payload);
@@ -23,8 +26,11 @@ const cardSlice = createSlice({
     setError(state, action) {
       state.error = action.payload;
     },
+    categoryCardsCount(state, action) {
+      state.categoryCardsCount = action.payload;
+    },
   },
 });
 
-export const { setCards, addCard, setLoading, setError } = cardSlice.actions;
+export const { setCards, addCard, setLoading, setError, categoryCardsCount } = cardSlice.actions;
 export default cardSlice.reducer;

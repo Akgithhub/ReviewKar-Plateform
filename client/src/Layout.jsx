@@ -1,15 +1,16 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet } from "react-router-dom";
 import Navbar from "./components/global/Navbar";
 import Footer from "./components/global/Footer";
 import useSyncUser from "./hooks/useSyncUser";
+import syncCardData from "./hooks/syncCardData";
 import { useUser } from "@clerk/clerk-react";
 
 const Layout = () => {
   // Use the sync hook to make sure user data is saved to MongoDB
-  const { isSyncing, error } = useSyncUser();
+  const { error } = useSyncUser();
   const { isSignedIn } = useUser();
-
+  // syncCardData();
   return (
     <div>
       <Navbar />

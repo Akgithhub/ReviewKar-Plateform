@@ -1,9 +1,14 @@
 import { FaArrowRight } from "react-icons/fa";
 import { categories } from "@/constents/categories.js";
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import {categoryCardsCount} from "@/redux/slices/cardSlice"
 const AllCategory = () => {
   const navigate = useNavigate();
-
+  // const categoryCount = useSelector((state) => state.card.categoryCardsCount);
+  // console.log("category cards count from store:", categoryCount);
+  
+  
   const handleCategoryClick = (category) => {
     // Slugify the category to make it URL-friendly
     const slug = category

@@ -27,7 +27,7 @@ const ReviewCard = ({ review }) => {
           <strong>Reward:</strong> ₹{review.rewardAmount}
         </p>
         <p>
-          <strong>Reviewer:</strong> {review.name}
+          <strong>Reviewe Needed:</strong> {review.totalReviewsNeeded}
         </p>
         <p>
           <strong>Published:</strong>{" "}
