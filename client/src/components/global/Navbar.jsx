@@ -394,15 +394,15 @@ function Navbar() {
           </Link>
 
           <button className="bg-blue-500 text-white rounded hover:bg-blue-600 py-2 px-4">
-            <Link to="/earn">Earn</Link>
+            <Link to="/earn" onClick={toggleNav}>Earn</Link>
           </button>
           <button className="bg-gray-900 text-white rounded hover:bg-gray-800 py-2 px-4">
-            <Link to="/pricing">Get Reviews</Link>
+            <Link to="/pricing" onClick={toggleNav}>Get Reviews</Link>
           </button>
           {isSignedIn || isUser ? (
             <>
               <button className="bg-blue-500 text-white rounded hover:bg-blue-600 py-2 px-4">
-                <Link to="/">My Cards</Link>
+                <Link to="/" onClick={toggleNav}>My Cards</Link>
               </button>
             </>
           ) : (

@@ -15,7 +15,7 @@ const Pricing = () => {
   return (
     <>
       <PricingHero />
-      <PricingCards />
+      {/* <PricingCards /> */}
       {isSignedIn ? (
         <>
           {" "}

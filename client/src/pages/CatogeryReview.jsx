@@ -1,13 +1,20 @@
 import ReviewGrid from "../components/ui/ReviewGrid";
-import React from "react";
+import React, { useEffect } from "react";
 import { FaSearch } from "react-icons/fa";
+import axios from "axios";
+import { useState } from "react";
+import { useParams } from "react-router-dom";
 const CatogeryReview = () => {
+  const { categoryName } = useParams();
+  const [allCardsCount, setAllCardsCount] = useState(0);
+  // Convert slug back to readable format if needed
+  const formattedCategory = categoryName.replace(/-/g, " ");
+
   return (
     <div>
-      {" "}
       <div className="bg-[#03194a] text-white px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-30">
         <p className="text-sm">
-          <span className="font-semibold">145</span> result for{" "}
+          <span className="font-semibold">{allCardsCount}</span> result for{" "}
           <span className="font-semibold">"All categories"</span>
         </p>
         <div className="flex rounded overflow-hidden shadow-md">
@@ -24,7 +31,13 @@ const CatogeryReview = () => {
           </button>
         </div>
       </div>
-      <ReviewGrid/>
+      <div className="max-w-4xl mx-auto p-4">
+        <h1 className="text-2xl font-bold mb-4">
+          Category: {formattedCategory}
+        </h1>
+        {/* Show all review cards from this category */}
+      </div>
+      <ReviewGrid setAllCardsCount={ setAllCardsCount} />
     </div>
   );
 };

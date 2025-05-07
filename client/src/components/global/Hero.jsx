@@ -52,7 +52,7 @@ const Hero = ({
                 <Link to="/pricing">{getReviewsButtonText}</Link>
               </button>
               <button className="bg-blue-500 text-white rounded hover:bg-blue-600 px-[40px] py-[10px] max-w-[500px]">
-                <Link to="/">{earnButtonText}</Link>
+                <Link to="/earn">{earnButtonText}</Link>
               </button>
             </div>
           )}

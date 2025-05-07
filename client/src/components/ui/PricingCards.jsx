@@ -73,7 +73,7 @@ const PricingCards = () => {
         </div>
       </div>
     </div>
-  </section>
+  </section> 
   
   )
 }

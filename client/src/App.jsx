@@ -22,9 +22,9 @@ const App = () => {
             <Route path="pricing" element={<Pricing />} />
             <Route path="earn" element={<Earn />} />
             <Route path="catogery" element={<Catogery />} />
-            <Route path="single-catogery-review" element={<CatogeryReview />} />
+            <Route path="my-cards" element={<MyCards />} />
+            <Route path="catogery/:categoryName" element={<CatogeryReview />} />
             <Route path="*" element={<h1>404 Not Found</h1>} />
-            <Route path="/my-cards" element={<MyCards />} />
           </Route>
         </Routes>
       </Router>

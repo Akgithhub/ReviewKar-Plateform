@@ -1,29 +1,19 @@
 import React, { useEffect } from "react";
-import { useState } from "react";
 import {
   FaFacebookF,
   FaTwitter,
   FaLinkedinIn,
   FaShareAlt,
 } from "react-icons/fa";
-// import { FaShareAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 
-const ReviewCard = () => {
-  const [userCardsData, setUserCardsData] = useState([]);
-  const userData = useSelector((state) => state.user);
-
-  useEffect(() => {
-    if (userData.cards) {
-      setUserCardsData(userData.cards);
-    }
-  }, [userData.cards]);
-
+// ========== ReviewCard Component ==========
+const ReviewCard = ({ cards = [] }) => {
   return (
     <div className="px-4 py-6 max-w-4xl mx-auto">
-      {userCardsData.length > 0 ? (
-        userCardsData.map((card) => (
+      {cards.length > 0 ? (
+        cards.map((card) => (
           <div
             key={card._id}
             className="bg-white p-6 rounded-lg shadow-md mb-6 hover:shadow-lg transition-shadow"
@@ -91,54 +81,61 @@ const ReviewCard = () => {
     </div>
   );
 };
-const CompanyInfo = () => {
-  const userDataCompany = useSelector((state) => state.user);
 
+// ========== CompanyInfo Component ==========
+const CompanyInfo = ({ companyData }) => {
   useEffect(() => {
-    if (userDataCompany) {
-      console.log(userDataCompany);
+    if (companyData) {
+      console.log(companyData);
     }
-  }, [userDataCompany]);
+  }, [companyData]);
+
   return (
-    <>
-      <div className="bg-white p-4 shadow-sm rounded">
-        <h3 className="text-xl font-semibold mb-2">Good Electronics</h3>
-        <p className="text-sm text-gray-600 mb-3">
-          Illud scipitent mei ea, te nec sonet partem contentiones.
-        </p>
-        <div className="text-sm text-gray-600 mb-1">
-          <strong>Address:</strong>
-          <br />
-          9785 Baker st. 567
-          <br />
-          Los Angeles - US
-        </div>
-        <div className="text-sm text-gray-600 mb-1">
-          <strong>Website:</strong>
-          <br />
-          <a href="#" className="text-blue-600">
-            goodelectronics.com
-          </a>
-        </div>
-        <div className="text-sm text-gray-600 mb-1">
-          <strong>Email:</strong>
-          <br />
-          info@goodelectronics.com
-        </div>
-        <div className="text-sm text-gray-600 mb-3">
-          <strong>Telephone:</strong>
-          <br />
-          +542 542 566264
-        </div>
-        <div className="flex gap-3 text-gray-500">
-          <FaFacebookF />
-          <FaTwitter />
-          <FaLinkedinIn />
-        </div>
+    <div className="bg-white p-4 shadow-sm rounded">
+      <h3 className="text-xl font-semibold mb-2">
+        {companyData?.company || " "}
+      </h3>
+      <p className="text-sm text-gray-600 mb-3">
+        {companyData?.description || " "}
+      </p>
+      <div className="text-sm text-gray-600 mb-1">
+        <strong>Address:</strong>
+        <br />
+        {companyData?.address || " "}
       </div>
-    </>
+      <div className="text-sm text-gray-600 mb-1">
+        <strong>Website:</strong>
+        <br />
+        <a href="#" className="text-blue-600">
+          {companyData?.websiteUrl || " "}
+        </a>
+      </div>
+      <div className="text-sm text-gray-600 mb-1">
+        <strong>Email:</strong>
+        <br />
+        {companyData?.email || " "}
+      </div>
+      <div className="text-sm text-gray-600 mb-3">
+        <strong>Telephone:</strong>
+        <br />
+        {companyData?.telephoneUrl || " "}
+      </div>
+      <div className="flex gap-3 text-gray-500">
+        <a href={companyData?.facebookUrl} target="_blank" rel="noopener noreferrer">
+          <FaFacebookF />
+        </a>
+        <a href={companyData?.twitterUrl} target="_blank" rel="noopener noreferrer">
+          <FaTwitter />
+        </a>
+        <a href={companyData?.linkedinUrl} target="_blank" rel="noopener noreferrer">
+          <FaLinkedinIn />
+        </a>
+      </div>
+    </div>
   );
 };
+
+// ========== Pagination Component ==========
 const Pagination = () => (
   <div className="flex justify-center items-center space-x-2 mt-6">
     {[1, 2, 3, 4].map((num) => (
@@ -153,15 +150,19 @@ const Pagination = () => (
     ))}
   </div>
 );
+
+// ========== Main Wrapper Component ==========
 const ProfileSectionCards = () => {
+  const userData = useSelector((state) => state.user);
+
   return (
     <section className="bg-gray-100 py-10">
       <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
-          <ReviewCard />
+          <ReviewCard cards={userData.cards} />
           <Pagination />
         </div>
-        <CompanyInfo />
+        <CompanyInfo companyData={userData} />
       </div>
     </section>
   );

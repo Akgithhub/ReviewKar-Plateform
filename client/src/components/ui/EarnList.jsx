@@ -8,26 +8,6 @@ const EarnList = () => {
   const [loading, setLoading] = useState(true);
   const [user, setUser] = useState(null);
   const [error, setError] = useState(null);
-  const CardData = [
-    {
-      id: uniqid(),
-      title: "Head1",
-      description:
-        "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
-      image: "./pricing-hero.jpg",
-      category: "Category",
-      date: "20 Dec, 2017",
-    },
-    {
-      id: uniqid(),
-      title: "Head",
-      description:
-        "Quodsi omittam quo no, ex audire ceteros pri, vel an meis choro consequat...",
-      image: "./pricing-hero.jpg",
-      category: "Category",
-      date: "20 Dec, 2017",
-    },
-  ];
   useEffect(() => {
     const fetchCards = async () => {
       try {
@@ -84,36 +64,6 @@ const EarnList = () => {
                         {card.creator.name}
                       </div>
                       <div>{card.rewardAmount}</div>
-                    </div>
-                  </div>
-                </div>
-              ))}
-              {CardData.map((card, index) => (
-                <div
-                  key={index}
-                  className="bg-white rounded-lg overflow-hidden shadow hover:shadow-lg transition"
-                >
-                  <img
-                    src={card.image}
-                    alt=""
-                    className="w-full h-48 object-cover"
-                  />
-                  <div className="p-5">
-                    <div className="text-sm text-gray-500">
-                      {card.category} - {card.date}
-                    </div>
-                    <h3 className="text-lg font-semibold text-gray-800 mt-2">
-                      {card.title}
-                    </h3>
-                    <p className="text-sm text-gray-600 mt-2">
-                      {card.description}
-                    </p>
-                    <div className="mt-4 flex items-center justify-between text-sm text-gray-400">
-                      <div className="flex items-center gap-2">
-                        <div className="w-6 h-6 bg-gray-300 rounded-full"></div>{" "}
-                        Admin
-                      </div>
-                      <span>12k</span>
                     </div>
                   </div>
                 </div>
