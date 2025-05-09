@@ -51,7 +51,7 @@ const useSyncUser = () => {
           }
         );
 
-        console.log("Response from server:", res.data);
+        // console.log("Response from server:", res.data);
 
         // Optionally, you can update Redux with what backend returns
         dispatch(setUser(res.data.user));

@@ -3,6 +3,8 @@ import uniqid from "uniqid";
 import { useEffect, useState } from "react";
 import { IKImage } from "imagekitio-react";
 import axios from "axios";
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 const EarnList = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -13,7 +15,7 @@ const EarnList = () => {
       try {
         const getAllCardsApi = `${import.meta.env.VITE_API_URL}/api/card/cards`;
         const res = await axios.get(getAllCardsApi);
-        console.log(res.data); // make sure this is the correct path
+        // console.log(res.data); // make sure this is the correct path
         setCards(res.data.cards);
         setLoading(false);
         setUser(res.data.user);
@@ -78,23 +80,9 @@ const EarnList = () => {
           )}
 
           {/* <!-- Pagination --> */}
-          <div className="flex justify-center space-x-2">
-            <button className="px-3 py-1 bg-white rounded-full shadow hover:bg-blue-500 hover:text-white">
-              ‹
-            </button>
-            <button className="px-3 py-1 bg-blue-600 text-white rounded-full">
-              1
-            </button>
-            <button className="px-3 py-1 bg-white rounded-full shadow hover:bg-blue-500 hover:text-white">
-              2
-            </button>
-            <button className="px-3 py-1 bg-white rounded-full shadow hover:bg-blue-500 hover:text-white">
-              3
-            </button>
-            <button className="px-3 py-1 bg-white rounded-full shadow hover:bg-blue-500 hover:text-white">
-              ›
-            </button>
-          </div>
+          <Stack spacing={2}>
+            <Pagination count={10} />
+          </Stack>
         </div>
 
         {/* <!-- Right: Sidebar --> */}

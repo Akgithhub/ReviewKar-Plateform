@@ -6,6 +6,7 @@ import { setUser } from "@/redux/slices/userSlice.js";
 import axios from "axios";
 import UploadImageCardCreation from "../../constents/UploadImageCardCreation.jsx";
 import { useNavigate } from "react-router-dom";
+import Alert from "@mui/material/Alert";
 
 const CreateCardForm = () => {
   const { isSignedIn } = useAuth();
@@ -14,7 +15,9 @@ const CreateCardForm = () => {
   const dispatch = useDispatch();
   const [error, setError] = useState(null);
   const [resetImage, setResetImage] = useState(false);
-  let imageUrlFromRedux = useSelector((state) => state.user.imageUrl);
+  const imageUrlFromRedux = useSelector((state) => state.user.imageUrl);
+  const [success, setSuccess] = useState(false);
+
   const [formData, setFormData] = useState({
     title: "",
     description: "",
@@ -67,8 +70,8 @@ const CreateCardForm = () => {
       }/api/card/create-card`;
       const res = await axios.post(createCardApi, payload);
       if (res.status === 201) {
-        console.log("Card created successfully:", res.data.card);
         setError("");
+        setSuccess(true); // show success alert
         setFormData({
           title: "",
           description: "",
@@ -78,10 +81,14 @@ const CreateCardForm = () => {
           totalReviewsNeeded: "",
           companyName: "",
         });
-        // dispatch(setUser({ imageUrl: "" })); // Clear the image URL from Redux
-        navigate("/earn"); // Redirect to the Earn page
+        // Optionally clear image URL from Redux
+        // dispatch(setUser({ imageUrl: "" }));
+        setTimeout(() => {
+          navigate("/earn");
+        }, 2000); // redirect after 2 seconds
       } else {
         setError("Something went wrong. Please try again.");
+        setSuccess(false);
       }
     } catch (error) {
       console.error("Error creating card:", error);
@@ -96,6 +103,17 @@ const CreateCardForm = () => {
       onSubmit={handleSubmit}
       className="max-w-4xl mx-auto my-10 bg-white p-8 rounded-2xl shadow-lg"
     >
+      {success && (
+        <Alert variant="outlined" severity="success">
+          Card created successfully!
+        </Alert>
+      )}
+
+      {error && (
+        <Alert variant="outlined" severity="error">
+          {error}
+        </Alert>
+      )}
       <h2 className="text-3xl font-semibold text-gray-800 mb-8 text-center">
         Create a Review Card
       </h2>
@@ -204,7 +222,7 @@ const CreateCardForm = () => {
       <div className="mt-8">
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300"
+          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300 cursor-pointer"
         >
           Create Card
         </button>

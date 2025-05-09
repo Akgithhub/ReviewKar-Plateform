@@ -10,7 +10,8 @@ import { useSelector } from "react-redux";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import Skeleton from "@mui/material/Skeleton";
-
+import Pagination from "@mui/material/Pagination";
+import Stack from "@mui/material/Stack";
 
 // ========== ReviewCard Component ==========
 const ReviewCard = ({ cards = [], loading, setLoading }) => {
@@ -215,22 +216,6 @@ const CompanyInfo = ({ companyData, loading, setLoading }) => {
   );
 };
 
-// ========== Pagination Component ==========
-const Pagination = () => (
-  <div className="flex justify-center items-center space-x-2 mt-6">
-    {[1, 2, 3, 4].map((num) => (
-      <button
-        key={num}
-        className={`w-8 h-8 rounded-full ${
-          num === 1 ? "bg-blue-600 text-white" : "bg-white text-gray-800"
-        } border hover:bg-blue-500 hover:text-white`}
-      >
-        {num}
-      </button>
-    ))}
-  </div>
-);
-
 // ========== Main Wrapper Component ==========
 const ProfileSectionCards = () => {
   const userData = useSelector((state) => state.user);
@@ -244,7 +229,10 @@ const ProfileSectionCards = () => {
             loading={loading}
             setLoading={setLoading}
           />
-          <Pagination />
+          {/* <Pagination /> */}
+          <Stack spacing={2}>
+            <Pagination count={10} />
+          </Stack>
         </div>
         <CompanyInfo
           companyData={userData}
