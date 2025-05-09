@@ -1,1 +1,2 @@
-bg-gradient-to-b from-[#03143d] to-[#02143a] text-white
+<UploadImageCardCreation />
+

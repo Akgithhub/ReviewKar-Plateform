@@ -5,27 +5,30 @@ import {
   FaLinkedinIn,
   FaShareAlt,
 } from "react-icons/fa";
-import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
 import Skeleton from "@mui/material/Skeleton";
 import Pagination from "@mui/material/Pagination";
+import { categories } from "@/constents/categories.js";
 import Stack from "@mui/material/Stack";
+import UploadImageCardCreation from "@/constents/UploadImageCardCreation.jsx";
 
 // ========== ReviewCard Component ==========
 const ReviewCard = ({ cards = [], loading, setLoading }) => {
   const { user } = useUser();
+  const [editCardId, setEditCardId] = useState(null);
+  const [editedCardData, setEditedCardData] = useState({});
+
   const handleDeleteCard = async (cardID) => {
-    confirm(
-      "Are you sure you want to delete this card? This action cannot be undone."
-    );
+    if (!confirm("Are you sure you want to delete this card?")) return;
     try {
-      const response = await axios.delete(
+      await axios.delete(
         `${import.meta.env.VITE_API_URL}/api/card/delete-card/${cardID}/${
           user.id
         }`
       );
+      window.location.reload();
     } catch (error) {
       console.error(
         "Error deleting card:",
@@ -34,67 +37,251 @@ const ReviewCard = ({ cards = [], loading, setLoading }) => {
     }
   };
 
+  const handleEditClick = (card) => {
+    setEditCardId(card._id);
+    setEditedCardData({ ...card });
+  };
+
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+
+    if (name === "category") {
+      const slug = value
+        .toLowerCase()
+        .replace(/[^a-z0-9]+/g, "-")
+        .replace(/^-+|-+$/g, "");
+
+      setEditedCardData((prev) => ({
+        ...prev,
+        [name]: value,
+        categorySlug: slug,
+      }));
+    } else {
+      setEditedCardData((prev) => ({
+        ...prev,
+        [name]: value,
+      }));
+    }
+  };
+
+  const handleUpdateCard = async (cardID) => {
+    try {
+      const response = await axios.patch(
+        `${import.meta.env.VITE_API_URL}/api/card/update-card/${cardID}`,
+        editedCardData
+      );
+      console.log(response.data.message);
+      setEditCardId(null);
+      window.location.reload();
+    } catch (error) {
+      console.error(
+        "Error updating card:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
+  const handleCancelEdit = () => {
+    setEditCardId(null);
+    setEditedCardData({});
+  };
+
   return (
     <div className="px-4 py-6 max-w-4xl mx-auto">
       {cards.length > 0 ? (
-        cards.map((card) => (
-          <div
-            key={card._id}
-            className="bg-white p-6 rounded-lg shadow-md mb-6 hover:shadow-lg transition-shadow"
-          >
-            <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
-              <img
-                src={card.imageUrl}
-                alt="Card"
-                className="w-24 h-24 rounded-full object-cover border-2 border-gray-300"
-              />
-              <div>
-                <h3 className="text-xl font-bold text-gray-800">
-                  {card.title}
-                </h3>
-                <p className="text-sm text-gray-600">{card.category}</p>
-                <p className="text-yellow-500 text-sm">★★★★★ 5.0/5.0</p>
+        cards.map((card) => {
+          const isEditing = card._id === editCardId;
+          return (
+            <div
+              key={card._id}
+              className="bg-white p-6 rounded-xl shadow-md mb-6 hover:shadow-lg transition-shadow space-y-4"
+            >
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4">
+                {isEditing ? (
+                  <UploadImageCardCreation />
+                ) : (
+                  <img
+                    src={card.imageUrl}
+                    alt="Card"
+                    className="w-24 h-24 rounded-full object-cover border-2 border-gray-300"
+                  />
+                )}
+                <div className="flex-1">
+                  {isEditing ? (
+                    <div className="space-y-2">
+                      <label className="block text-sm font-medium">Title</label>
+                      <input
+                        type="text"
+                        name="title"
+                        value={editedCardData.title}
+                        onChange={handleChange}
+                        className="w-full border rounded px-3 py-2"
+                      />
+
+                      <label className="block text-sm font-medium text-gray-700 mb-1">
+                        Category
+                      </label>
+                      <select
+                        name="category"
+                        value={editedCardData.category}
+                        onChange={handleChange}
+                        className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
+                      >
+                        <option value="">{editedCardData.category}</option>
+                        {categories.map((cat, i) => (
+                          <option key={i} value={cat}>
+                            {cat}
+                          </option>
+                        ))}
+                      </select>
+                      <input
+                        type="text"
+                        disabled
+                        value={editedCardData.categorySlug || ""}
+                        width={"100%"}
+                        placeholder={editedCardData.category}
+                      />
+                    </div>
+                  ) : (
+                    <>
+                      <h3 className="text-xl font-bold text-gray-800">
+                        {card.title}
+                      </h3>
+                      <p className="text-sm text-gray-600">{card.category}</p>
+                    </>
+                  )}
+                  <p className="text-yellow-500 text-sm mt-1">★★★★★ 5.0/5.0</p>
+                </div>
+              </div>
+
+              <div className="space-y-2">
+                {isEditing ? (
+                  <>
+                    <label className="block text-sm font-medium">
+                      Company Name
+                    </label>
+                    <input
+                      type="text"
+                      name="companyName"
+                      value={editedCardData.companyName}
+                      onChange={handleChange}
+                      className="w-full border rounded px-3 py-2"
+                    />
+                    <label className="block text-sm font-medium">
+                      Description
+                    </label>
+                    <textarea
+                      name="description"
+                      value={editedCardData.description}
+                      onChange={handleChange}
+                      className="w-full border rounded px-3 py-2"
+                      rows={4}
+                    />
+                  </>
+                ) : (
+                  <>
+                    <h4 className="text-lg font-semibold text-gray-800">
+                      {card.companyName}
+                    </h4>
+                    <p className="text-gray-700 text-sm">{card.description}</p>
+                  </>
+                )}
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 text-sm text-gray-600">
+                {isEditing ? (
+                  <>
+                    <div>
+                      <label className="block text-sm font-medium">
+                        Reward Amount (₹)
+                      </label>
+                      <input
+                        type="text"
+                        name="rewardAmount"
+                        value={editedCardData.rewardAmount}
+                        onChange={handleChange}
+                        className="w-full border rounded px-3 py-2"
+                      />
+                    </div>
+                    <div>
+                      <label className="block text-sm font-medium">
+                        Total Reviews Needed
+                      </label>
+                      <input
+                        type="text"
+                        name="totalReviewsNeeded"
+                        value={editedCardData.totalReviewsNeeded}
+                        onChange={handleChange}
+                        className="w-full border rounded px-3 py-2"
+                      />
+                    </div>
+                  </>
+                ) : (
+                  <>
+                    <p>
+                      <strong>Reward:</strong> ₹{card.rewardAmount}
+                    </p>
+                    <p>
+                      <strong>Needed Reviews:</strong> {card.totalReviewsNeeded}
+                    </p>
+                  </>
+                )}
+                <p className="col-span-full sm:col-span-2">
+                  <strong>Last Updated:</strong>{" "}
+                  {new Date(card.updatedAt).toLocaleString()}
+                </p>
+              </div>
+
+              <div className="flex items-center justify-between">
+                <div className="flex gap-3">
+                  {isEditing ? (
+                    <>
+                      <button
+                        onClick={() => handleUpdateCard(card._id)}
+                        className="bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
+                      >
+                        Save
+                      </button>
+                      <button
+                        onClick={handleCancelEdit}
+                        className="bg-gray-300 text-black px-4 py-2 rounded hover:bg-gray-400"
+                      >
+                        Cancel
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <button
+                        onClick={() => handleEditClick(card)}
+                        className="hover:bg-gray-100 p-2 rounded-full"
+                      >
+                        <img
+                          src="./edit-blue.svg"
+                          alt="Edit"
+                          className="w-5 h-5"
+                        />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteCard(card._id)}
+                        className="hover:bg-gray-100 p-2 rounded-full"
+                      >
+                        <img
+                          src="./trash.svg"
+                          alt="Delete"
+                          className="w-5 h-5"
+                        />
+                      </button>
+                    </>
+                  )}
+                </div>
+                <div className="flex items-center gap-2 text-blue-600 hover:underline cursor-pointer">
+                  <FaShareAlt />
+                  Share
+                </div>
               </div>
             </div>
-
-            <h4 className="text-lg font-semibold mb-2 text-gray-800">
-              {card.companyName}
-            </h4>
-            <p className="text-gray-700 text-sm mb-2">{card.description}</p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600 mb-4">
-              <p>
-                <strong>Reward:</strong> ₹{card.rewardAmount}
-              </p>
-              <p>
-                <strong>Needed Reviews:</strong> {card.totalReviewsNeeded}
-              </p>
-              <p>
-                <strong>Last Updated:</strong>{" "}
-                {new Date(card.updatedAt).toLocaleString()}
-              </p>
-            </div>
-
-            <div className="flex items-center justify-between text-sm">
-              <div className="flex gap-3">
-                <button className="hover:bg-gray-100 p-2 rounded-full cursor-pointer">
-                  <img src="./edit-blue.svg" alt="Edit" className="w-5 h-5" />
-                </button>
-                <button
-                  onClick={() => handleDeleteCard(card._id)}
-                  type="button"
-                  className="hover:bg-gray-100 p-2 rounded-full cursor-pointer"
-                >
-                  <img src="./trash.svg" alt="Delete" className="w-5 h-5" />
-                </button>
-              </div>
-              <div className="flex items-center gap-2 cursor-pointer text-blue-600 hover:underline">
-                <FaShareAlt />
-                Share
-              </div>
-            </div>
-          </div>
-        ))
+          );
+        })
       ) : (
         <div className="px-4 py-6 max-w-4xl mx-auto">
           {[...Array(3)].map((_, index) => (

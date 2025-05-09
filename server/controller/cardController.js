@@ -166,16 +166,15 @@ export const deleteCard = async (req, res) => {
 
 export const updateCard = async (req, res) => {
   try {
-    // Temporary static user ID for testing purposes
-    const userId = "6814538b66ad060dceb6f7bf";
     const cardId = req.params.id;
     const newCardData = req.body;
+    console.log(newCardData);
 
-    console.log("User ID:", userId);
+    // console.log("User ID:", userId);
     console.log("Card ID:", cardId);
 
     // Step 1: Validate required IDs
-    if (!cardId || !userId) {
+    if (!cardId) {
       return res.status(400).json({
         message: "Card ID and User ID are required or not found.",
       });
