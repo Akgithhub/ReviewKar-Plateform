@@ -168,10 +168,10 @@ export const updateCard = async (req, res) => {
   try {
     const cardId = req.params.id;
     const newCardData = req.body;
-    console.log(newCardData);
+    // console.log(newCardData);
 
     // console.log("User ID:", userId);
-    console.log("Card ID:", cardId);
+    // console.log("Card ID:", cardId);
 
     // Step 1: Validate required IDs
     if (!cardId) {

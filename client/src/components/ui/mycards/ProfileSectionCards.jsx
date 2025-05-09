@@ -312,7 +312,6 @@ const ReviewCard = ({ cards = [], loading, setLoading }) => {
     </div>
   );
 };
-
 // ========== CompanyInfo Component ==========
 const CompanyInfo = ({ companyData, loading, setLoading }) => {
   useEffect(() => {
