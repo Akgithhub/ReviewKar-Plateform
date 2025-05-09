@@ -14,7 +14,7 @@ export const cardRouter = Router();
 // cardRouter.post("/create-card",clerkMiddleware(),createCard)
 cardRouter.post("/create-card", createCard);
 cardRouter.get("/cards", getAllCard);
-cardRouter.delete("/delete-card/:id", clerkMiddleware(), deleteCard);
+cardRouter.delete("/delete-card/:id/:userid", clerkMiddleware(), deleteCard);
 cardRouter.patch("/update-card/:id", clerkMiddleware(), updateCard);
 cardRouter.get("/get-card/:id", clerkMiddleware(), getCardById);
 cardRouter.get("/get-cards-by-user/:id", clerkMiddleware(), getCardsByUserId);

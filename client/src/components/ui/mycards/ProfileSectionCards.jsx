@@ -7,9 +7,31 @@ import {
 } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
+import { useUser } from "@clerk/clerk-react";
+import axios from "axios";
+import Skeleton from '@mui/material/Skeleton';
+
 
 // ========== ReviewCard Component ==========
 const ReviewCard = ({ cards = [] }) => {
+  const { user } = useUser();
+  const handleDeleteCard = async (cardID) => {
+    confirm(
+      "Are you sure you want to delete this card? This action cannot be undone.")
+    try {
+      const response = await axios.delete(
+        `${import.meta.env.VITE_API_URL}/api/card/delete-card/${cardID}/${
+          user.id
+        }`
+      );
+    } catch (error) {
+      console.error(
+        "Error deleting card:",
+        error.response?.data || error.message
+      );
+    }
+  };
+
   return (
     <div className="px-4 py-6 max-w-4xl mx-auto">
       {cards.length > 0 ? (
@@ -53,10 +75,14 @@ const ReviewCard = ({ cards = [] }) => {
 
             <div className="flex items-center justify-between text-sm">
               <div className="flex gap-3">
-                <button className="hover:bg-gray-100 p-2 rounded-full">
+                <button className="hover:bg-gray-100 p-2 rounded-full cursor-pointer">
                   <img src="./edit-blue.svg" alt="Edit" className="w-5 h-5" />
                 </button>
-                <button className="hover:bg-gray-100 p-2 rounded-full">
+                <button
+                  onClick={() => handleDeleteCard(card._id)}
+                  type="button"
+                  className="hover:bg-gray-100 p-2 rounded-full cursor-pointer"
+                >
                   <img src="./trash.svg" alt="Delete" className="w-5 h-5" />
                 </button>
               </div>
@@ -121,13 +147,25 @@ const CompanyInfo = ({ companyData }) => {
         {companyData?.telephoneUrl || " "}
       </div>
       <div className="flex gap-3 text-gray-500">
-        <a href={companyData?.facebookUrl} target="_blank" rel="noopener noreferrer">
+        <a
+          href={companyData?.facebookUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <FaFacebookF />
         </a>
-        <a href={companyData?.twitterUrl} target="_blank" rel="noopener noreferrer">
+        <a
+          href={companyData?.twitterUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <FaTwitter />
         </a>
-        <a href={companyData?.linkedinUrl} target="_blank" rel="noopener noreferrer">
+        <a
+          href={companyData?.linkedinUrl}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           <FaLinkedinIn />
         </a>
       </div>

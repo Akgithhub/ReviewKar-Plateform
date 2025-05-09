@@ -270,7 +270,12 @@ function Navbar() {
           {isSignedIn || isUser ? (
             <>
               <div className="relative group inline-block">
-                <button className="bg-blue-500 text-white rounded hover:bg-blue-600 py-2 px-4">
+                <button
+                  onClick={() => {
+                    window.location.href = "/my-cards";
+                  }}
+                  className="bg-blue-500 text-white rounded hover:bg-blue-600 py-2 px-4"
+                >
                   <Link to="/my-cards">
                     <img src="./my-card.svg" alt="My Cards" />
                   </Link>
@@ -394,15 +399,21 @@ function Navbar() {
           </Link>
 
           <button className="bg-blue-500 text-white rounded hover:bg-blue-600 py-2 px-4">
-            <Link to="/earn" onClick={toggleNav}>Earn</Link>
+            <Link to="/earn" onClick={toggleNav}>
+              Earn
+            </Link>
           </button>
           <button className="bg-gray-900 text-white rounded hover:bg-gray-800 py-2 px-4">
-            <Link to="/pricing" onClick={toggleNav}>Get Reviews</Link>
+            <Link to="/pricing" onClick={toggleNav}>
+              Get Reviews
+            </Link>
           </button>
           {isSignedIn || isUser ? (
             <>
               <button className="bg-blue-500 text-white rounded hover:bg-blue-600 py-2 px-4">
-                <Link to="/" onClick={toggleNav}>My Cards</Link>
+                <Link to="/" onClick={toggleNav}>
+                  My Cards
+                </Link>
               </button>
             </>
           ) : (

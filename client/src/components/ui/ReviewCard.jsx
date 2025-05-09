@@ -37,14 +37,14 @@ const ReviewCard = ({ review }) => {
 
       {/* Footer buttons */}
       <div className="flex items-center justify-between text-sm">
-        <div className="flex gap-3">
+        {/* <div className="flex gap-3">
           <button className="hover:bg-gray-100 p-2 rounded-full">
             <img src="/edit-blue.svg" alt="Edit" className="w-5 h-5" />
           </button>
           <button className="hover:bg-gray-100 p-2 rounded-full">
             <img src="/trash.svg" alt="Delete" className="w-5 h-5" />
           </button>
-        </div>
+        </div> */}
         <div className="flex items-center gap-2 cursor-pointer text-blue-600 hover:underline">
           <FaShareAlt />
           Share

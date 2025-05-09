@@ -87,7 +87,9 @@ export const createCard = async (req, res) => {
  */
 export const getAllCard = async (req, res) => {
   try {
-    const cards = await cardModel.find().populate("creator", "name email imageUrl"); // Populate creator details
+    const cards = await cardModel
+      .find()
+      .populate("creator", "name email imageUrl"); // Populate creator details
 
     if (!cards || cards.length === 0) {
       return res.status(404).json({ message: "No cards found" });
@@ -106,8 +108,6 @@ export const getAllCard = async (req, res) => {
   }
 };
 
-
-
 // ------------------deleteCard-------------------
 /**
  * @desc    Delete a specific card and update the user's card list
@@ -118,10 +118,7 @@ export const getAllCard = async (req, res) => {
 export const deleteCard = async (req, res) => {
   try {
     const cardId = req.params.id;
-    // const userId = req.user?.id; // Assuming req.user is set by authentication middleware
-    const userId = "6814538b66ad060dceb6f7bf";
-    console.log("User ID:", userId);
-    console.log("Card ID:", cardId);
+    const userId = req.params.userid; // Assuming req.user is set by authentication middleware
 
     // Step 1: Validate input
     if (!cardId || !userId) {
@@ -138,10 +135,8 @@ export const deleteCard = async (req, res) => {
 
     // Step 4: Delete the card document from the database
     const deletedCard = await cardModel.findByIdAndDelete(cardId);
-
-    // Step 5: Remove the card ID from the user's cards array
-    const updatedUser = await userModel.findByIdAndUpdate(
-      userId,
+    const updatedUser = await userModel.findOneAndUpdate(
+      { clerkId: userId },
       { $pull: { cards: cardId } },
       { new: true }
     );
