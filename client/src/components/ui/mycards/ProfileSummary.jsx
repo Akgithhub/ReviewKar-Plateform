@@ -2,6 +2,8 @@ import React from "react";
 import { FaStar } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 import { toggleUserDetailsForm } from "@/redux/slices/userSlice";
+import Skeleton from "@mui/material/Skeleton";
+import Avatar from "@mui/material/Avatar";
 // const RatingBar = ({ stars, value, max }) => {
 //   const widthPercent = (value / max) * 100;
 //   return (
@@ -43,12 +45,14 @@ const ProfileSummary = () => {
         {/* Left Side - Logo & Info */}
         <div className="flex items-center gap-6">
           {/* Logo */}
+
           <div className="w-20 h-20 bg-white  rounded">
             <img
               src={userData.imageUrl}
               alt="Logo"
               className="w-full h-full object-contain"
             />
+            <Skeleton variant="text" width="80%" height={24} />
           </div>
           {/* Details */}
           <div>
@@ -69,6 +73,7 @@ const ProfileSummary = () => {
               </div>
             </div>
             <h1 className="text-[12px] font-bold">{userData.description}</h1>
+
             {/* <div className="flex items-center gap-1 mt-2">
               {[...Array(4)].map((_, i) => (
                 <FaStar key={i} className="text-green-400" />

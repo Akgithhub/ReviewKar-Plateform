@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   FaFacebookF,
   FaTwitter,
@@ -9,15 +9,16 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { useUser } from "@clerk/clerk-react";
 import axios from "axios";
-import Skeleton from '@mui/material/Skeleton';
+import Skeleton from "@mui/material/Skeleton";
 
 
 // ========== ReviewCard Component ==========
-const ReviewCard = ({ cards = [] }) => {
+const ReviewCard = ({ cards = [], loading, setLoading }) => {
   const { user } = useUser();
   const handleDeleteCard = async (cardID) => {
     confirm(
-      "Are you sure you want to delete this card? This action cannot be undone.")
+      "Are you sure you want to delete this card? This action cannot be undone."
+    );
     try {
       const response = await axios.delete(
         `${import.meta.env.VITE_API_URL}/api/card/delete-card/${cardID}/${
@@ -94,14 +95,30 @@ const ReviewCard = ({ cards = [] }) => {
           </div>
         ))
       ) : (
-        <div className="text-center py-10">
-          <p className="text-gray-700 text-lg mb-4">No cards are there.</p>
-          <Link
-            to="/pricing"
-            className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition"
-          >
-            Create Card
-          </Link>
+        <div className="px-4 py-6 max-w-4xl mx-auto">
+          {[...Array(3)].map((_, index) => (
+            <div key={index} className="bg-white p-6 rounded-lg shadow-md mb-6">
+              <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+                <Skeleton variant="circular" width={96} height={96} />
+                <div className="flex-1">
+                  <Skeleton variant="text" width="60%" height={24} />
+                  <Skeleton variant="text" width="40%" height={20} />
+                  <Skeleton variant="text" width="50%" height={20} />
+                </div>
+              </div>
+              <Skeleton variant="text" width="80%" height={24} />
+              <Skeleton variant="text" width="100%" height={60} />
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600 mb-4">
+                <Skeleton variant="text" width="60%" height={20} />
+                <Skeleton variant="text" width="60%" height={20} />
+                <Skeleton variant="text" width="60%" height={20} />
+              </div>
+              <div className="flex items-center justify-between text-sm">
+                <Skeleton variant="rectangular" width={100} height={36} />
+                <Skeleton variant="rectangular" width={60} height={36} />
+              </div>
+            </div>
+          ))}
         </div>
       )}
     </div>
@@ -109,66 +126,91 @@ const ReviewCard = ({ cards = [] }) => {
 };
 
 // ========== CompanyInfo Component ==========
-const CompanyInfo = ({ companyData }) => {
+const CompanyInfo = ({ companyData, loading, setLoading }) => {
   useEffect(() => {
-    if (companyData) {
-      console.log(companyData);
+    if (companyData?.company) {
+      setLoading(false);
+    } else {
+      setLoading(true);
     }
   }, [companyData]);
 
   return (
     <div className="bg-white p-4 shadow-sm rounded">
-      <h3 className="text-xl font-semibold mb-2">
-        {companyData?.company || " "}
-      </h3>
-      <p className="text-sm text-gray-600 mb-3">
-        {companyData?.description || " "}
-      </p>
-      <div className="text-sm text-gray-600 mb-1">
-        <strong>Address:</strong>
-        <br />
-        {companyData?.address || " "}
-      </div>
-      <div className="text-sm text-gray-600 mb-1">
-        <strong>Website:</strong>
-        <br />
-        <a href="#" className="text-blue-600">
-          {companyData?.websiteUrl || " "}
-        </a>
-      </div>
-      <div className="text-sm text-gray-600 mb-1">
-        <strong>Email:</strong>
-        <br />
-        {companyData?.email || " "}
-      </div>
-      <div className="text-sm text-gray-600 mb-3">
-        <strong>Telephone:</strong>
-        <br />
-        {companyData?.telephoneUrl || " "}
-      </div>
-      <div className="flex gap-3 text-gray-500">
-        <a
-          href={companyData?.facebookUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <FaFacebookF />
-        </a>
-        <a
-          href={companyData?.twitterUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <FaTwitter />
-        </a>
-        <a
-          href={companyData?.linkedinUrl}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <FaLinkedinIn />
-        </a>
-      </div>
+      {!loading ? (
+        <>
+          <h3 className="text-xl font-semibold mb-2">
+            {companyData?.company || " "}
+          </h3>
+          <p className="text-sm text-gray-600 mb-3">
+            {companyData?.description || " "}
+          </p>
+          <div className="text-sm text-gray-600 mb-1">
+            <strong>Address:</strong>
+            <br />
+            {companyData?.address || " "}
+          </div>
+          <div className="text-sm text-gray-600 mb-1">
+            <strong>Website:</strong>
+            <br />
+            <a
+              href={companyData?.websiteUrl || "#"}
+              className="text-blue-600"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {companyData?.websiteUrl || " "}
+            </a>
+          </div>
+          <div className="text-sm text-gray-600 mb-1">
+            <strong>Email:</strong>
+            <br />
+            {companyData?.email || " "}
+          </div>
+          <div className="text-sm text-gray-600 mb-3">
+            <strong>Telephone:</strong>
+            <br />
+            {companyData?.telephoneUrl || " "}
+          </div>
+          <div className="flex gap-3 text-gray-500">
+            {companyData?.facebookUrl && (
+              <a
+                href={companyData.facebookUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaFacebookF />
+              </a>
+            )}
+            {companyData?.twitterUrl && (
+              <a
+                href={companyData.twitterUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaTwitter />
+              </a>
+            )}
+            {companyData?.linkedinUrl && (
+              <a
+                href={companyData.linkedinUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                <FaLinkedinIn />
+              </a>
+            )}
+          </div>
+        </>
+      ) : (
+        <div className="bg-white p-4 rounded">
+          <Skeleton variant="text" width="80%" height={28} />
+          <Skeleton variant="text" width="100%" height={20} />
+          <Skeleton variant="text" width="60%" height={20} />
+          <Skeleton variant="text" width="40%" height={20} />
+          <Skeleton variant="text" width="50%" height={20} />
+        </div>
+      )}
     </div>
   );
 };
@@ -192,15 +234,23 @@ const Pagination = () => (
 // ========== Main Wrapper Component ==========
 const ProfileSectionCards = () => {
   const userData = useSelector((state) => state.user);
-
+  const [loading, setLoading] = useState(true);
   return (
     <section className="bg-gray-100 py-10">
       <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
-          <ReviewCard cards={userData.cards} />
+          <ReviewCard
+            cards={userData.cards}
+            loading={loading}
+            setLoading={setLoading}
+          />
           <Pagination />
         </div>
-        <CompanyInfo companyData={userData} />
+        <CompanyInfo
+          companyData={userData}
+          loading={loading}
+          setLoading={setLoading}
+        />
       </div>
     </section>
   );
