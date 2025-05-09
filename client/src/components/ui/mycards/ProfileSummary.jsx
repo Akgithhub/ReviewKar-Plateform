@@ -27,7 +27,6 @@ const ProfileSummary = () => {
   const dispatch = useDispatch();
   const userData = useSelector((state) => state.user);
   const userDetailsform = useSelector((state) => state.user.userDetailsform);
-  // console.log(userData); // <-- Log it
 
   const starCounts = {
     5: 120,
@@ -46,18 +45,46 @@ const ProfileSummary = () => {
         <div className="flex items-center gap-6">
           {/* Logo */}
 
-          <div className="w-20 h-20 bg-white  rounded">
-            <img
-              src={userData.imageUrl}
-              alt="Logo"
-              className="w-full h-full object-contain"
-            />
-            <Skeleton variant="text" width="80%" height={24} />
+          <div className="w-20 h-20 rounded overflow-hidden">
+            {!userData.imageUrl ? (
+              <Skeleton
+                variant="circular"
+                width={80}
+                height={80}
+                sx={{ bgcolor: "white" }}
+              >
+                <Avatar />
+              </Skeleton>
+            ) : (
+              <img
+                src={userData.imageUrl}
+                alt="Logo"
+                className="w-full h-full object-contain"
+              />
+            )}
           </div>
+
           {/* Details */}
           <div>
+            {!userData.name && (
+              <Skeleton
+                variant="text"
+                width="100%"
+                height={20}
+                sx={{ bgcolor: "white" }}
+              />
+            )}
             <p className="text-sm text-gray-300">{userData.name}</p>
+
             <div className="flex items-center justify-between gap-4">
+              {!userData.company && (
+                <Skeleton
+                  variant="text"
+                  width="500px"
+                  height={50}
+                  sx={{ bgcolor: "white" }}
+                />
+              )}
               <h1 className="text-2xl font-bold">{userData.company}</h1>
               <div className="relative group w-fit">
                 <button
@@ -72,6 +99,14 @@ const ProfileSummary = () => {
                 </button>
               </div>
             </div>
+            {!userData.description && (
+              <Skeleton
+                variant="text"
+                width="100%"
+                height={30}
+                sx={{ bgcolor: "white" }}
+              />
+            )}
             <h1 className="text-[12px] font-bold">{userData.description}</h1>
 
             {/* <div className="flex items-center gap-1 mt-2">
