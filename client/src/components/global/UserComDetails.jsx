@@ -4,6 +4,7 @@ import { useState } from "react";
 import axios from "axios";
 import { useUser } from "@clerk/clerk-react";
 import { setUser } from "@/redux/slices/userSlice";
+import { Alert } from "@mui/material";
 
 const UserComDetails = () => {
   const userDetailsform = useSelector((state) => state.user.userDetailsform);
@@ -63,9 +64,10 @@ const UserComDetails = () => {
       );
 
       if (res.status === 200) {
-        console.log("User details updated successfully:", res.data.user);
+        // console.log("User details updated successfully:", res.data.user);
         dispatch(toggleUserDetailsForm(false)); // Close modal
         dispatch(setUser(res.data.user)); // Update Redux state with new user data
+     
       } else {
         console.log("Failed to update user details");
       }
@@ -81,7 +83,7 @@ const UserComDetails = () => {
       {userDetailsform && (
         <div className="fixed inset-0 flex items-center justify-center z-50 backdrop-blur-sm bg-black/30">
           <div className="w-[95%] max-w-5xl mx-auto p-6 bg-white shadow-xl rounded-xl overflow-y-auto max-h-[90vh]">
-            {/* Modal Header */}
+   
             <div className="relative">
               <button
                 className="absolute cursor-pointer top-0 right-0 text-gray-400 hover:text-gray-600 text-2xl font-bold focus:outline-none"
