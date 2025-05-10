@@ -5,6 +5,7 @@ import { IKImage } from "imagekitio-react";
 import axios from "axios";
 import Pagination from "@mui/material/Pagination";
 import Stack from "@mui/material/Stack";
+import { Link } from "react-router-dom";
 const EarnList = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -76,6 +77,9 @@ const EarnList = () => {
               <h1 className="text-3xl font-bold text-gray-700 text-center">
                 No Cards at the Momenet
               </h1>
+              <button className="bg-blue-600 my-8 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700 block mx-auto">
+                <Link to="/pricing">Create Card</Link>
+              </button>
             </>
           )}
 

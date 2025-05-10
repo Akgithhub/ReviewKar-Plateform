@@ -13,9 +13,11 @@ import Pagination from "@mui/material/Pagination";
 import { categories } from "@/constents/categories.js";
 import Stack from "@mui/material/Stack";
 import UploadImageCardCreation from "@/constents/UploadImageCardCreation.jsx";
-
+import { Link } from "react-router-dom";
+import Alert from "@mui/material/Alert";
+import { useNavigate } from "react-router-dom";
 // ========== ReviewCard Component ==========
-const ReviewCard = ({ cards = [], loading, setLoading }) => {
+const ReviewCard = ({ cards = [], loading, setOnSucess, setError }) => {
   const { user } = useUser();
   const [editCardId, setEditCardId] = useState(null);
   const [editedCardData, setEditedCardData] = useState({});
@@ -28,8 +30,13 @@ const ReviewCard = ({ cards = [], loading, setLoading }) => {
           user.id
         }`
       );
-      window.location.reload();
+
+      setOnSucess(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
+      setError("Error while deleting card");
       console.error(
         "Error deleting card:",
         error.response?.data || error.message
@@ -70,10 +77,14 @@ const ReviewCard = ({ cards = [], loading, setLoading }) => {
         `${import.meta.env.VITE_API_URL}/api/card/update-card/${cardID}`,
         editedCardData
       );
-      console.log(response.data.message);
+      // console.log(response.data.message);
       setEditCardId(null);
-      window.location.reload();
+      setOnSucess(true);
+      setTimeout(() => {
+        window.location.reload();
+      }, 1000);
     } catch (error) {
+      setError("Error while Updating card");
       console.error(
         "Error updating card:",
         error.response?.data || error.message
@@ -85,11 +96,13 @@ const ReviewCard = ({ cards = [], loading, setLoading }) => {
     setEditCardId(null);
     setEditedCardData({});
   };
-
+  const sortedCards = [...cards].sort(
+    (a, b) => new Date(b.createdAt) - new Date(a.createdAt)
+  );
   return (
     <div className="px-4 py-6 max-w-4xl mx-auto">
-      {cards.length > 0 ? (
-        cards.map((card) => {
+      {sortedCards.length > 0 ? (
+        sortedCards.map((card) => {
           const isEditing = card._id === editCardId;
           return (
             <div
@@ -146,6 +159,9 @@ const ReviewCard = ({ cards = [], loading, setLoading }) => {
                     <>
                       <h3 className="text-xl font-bold text-gray-800">
                         {card.title}
+                      </h3>
+                      <h3 className="text-xl font-bold text-gray-800">
+                        {cards.length}
                       </h3>
                       <p className="text-sm text-gray-600">{card.category}</p>
                     </>
@@ -284,29 +300,47 @@ const ReviewCard = ({ cards = [], loading, setLoading }) => {
         })
       ) : (
         <div className="px-4 py-6 max-w-4xl mx-auto">
-          {[...Array(3)].map((_, index) => (
-            <div key={index} className="bg-white p-6 rounded-lg shadow-md mb-6">
-              <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
-                <Skeleton variant="circular" width={96} height={96} />
-                <div className="flex-1">
-                  <Skeleton variant="text" width="60%" height={24} />
-                  <Skeleton variant="text" width="40%" height={20} />
-                  <Skeleton variant="text" width="50%" height={20} />
+          {!loading ? (
+            <>
+              {" "}
+              <h1 className="text-3xl font-bold text-gray-700 text-center">
+                No Cards at the Momenet
+              </h1>
+              <button className="bg-blue-600 my-8 text-white px-4 py-2 rounded cursor-pointer hover:bg-blue-700 block mx-auto">
+                <Link to="/pricing">Create Card</Link>
+              </button>
+            </>
+          ) : (
+            <>
+              {" "}
+              {[...Array(3)].map((_, index) => (
+                <div
+                  key={index}
+                  className="bg-white p-6 rounded-lg shadow-md mb-6"
+                >
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-4 mb-4">
+                    <Skeleton variant="circular" width={96} height={96} />
+                    <div className="flex-1">
+                      <Skeleton variant="text" width="60%" height={24} />
+                      <Skeleton variant="text" width="40%" height={20} />
+                      <Skeleton variant="text" width="50%" height={20} />
+                    </div>
+                  </div>
+                  <Skeleton variant="text" width="80%" height={24} />
+                  <Skeleton variant="text" width="100%" height={60} />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600 mb-4">
+                    <Skeleton variant="text" width="60%" height={20} />
+                    <Skeleton variant="text" width="60%" height={20} />
+                    <Skeleton variant="text" width="60%" height={20} />
+                  </div>
+                  <div className="flex items-center justify-between text-sm">
+                    <Skeleton variant="rectangular" width={100} height={36} />
+                    <Skeleton variant="rectangular" width={60} height={36} />
+                  </div>
                 </div>
-              </div>
-              <Skeleton variant="text" width="80%" height={24} />
-              <Skeleton variant="text" width="100%" height={60} />
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600 mb-4">
-                <Skeleton variant="text" width="60%" height={20} />
-                <Skeleton variant="text" width="60%" height={20} />
-                <Skeleton variant="text" width="60%" height={20} />
-              </div>
-              <div className="flex items-center justify-between text-sm">
-                <Skeleton variant="rectangular" width={100} height={36} />
-                <Skeleton variant="rectangular" width={60} height={36} />
-              </div>
-            </div>
-          ))}
+              ))}
+            </>
+          )}
         </div>
       )}
     </div>
@@ -401,24 +435,38 @@ const CompanyInfo = ({ companyData, loading, setLoading }) => {
     </div>
   );
 };
-
 // ========== Main Wrapper Component ==========
 const ProfileSectionCards = () => {
   const userData = useSelector((state) => state.user);
   const [loading, setLoading] = useState(true);
+  const [onSucess, setOnSucess] = useState(false);
+  const [error, setError] = useState(false);
+  const [count, setcount] = useState(1);
+
+  // setcount(userData.cards);
+
   return (
     <section className="bg-gray-100 py-10">
       <div className="max-w-6xl mx-auto px-4 grid md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
+          {/* <h1>Total: {userData.cards.length}</h1> */}
+          {onSucess && <Alert severity="success">Updated Cards</Alert>}
+          {error && <Alert severity="error">{error}</Alert>}
           <ReviewCard
             cards={userData.cards}
             loading={loading}
             setLoading={setLoading}
+            setOnSucess={setOnSucess}
+            setError={setError}
           />
           {/* <Pagination /> */}
-          <Stack spacing={2}>
-            <Pagination count={10} />
-          </Stack>
+          {/* console.log(userData.cards); */}
+
+          {count > 0 && (
+            <Stack spacing={2}>
+              <Pagination count={10} />
+            </Stack>
+          )}
         </div>
         <CompanyInfo
           companyData={userData}
