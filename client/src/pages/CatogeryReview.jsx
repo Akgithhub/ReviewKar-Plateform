@@ -11,7 +11,7 @@ const CatogeryReview = () => {
   const formattedCategory = categoryName.replace(/-/g, " ");
 
   return (
-    <div>
+    <>
       <div className="bg-[#03194a] text-white px-6 py-4 flex flex-col md:flex-row md:items-center md:justify-between gap-4 pt-30">
         <p className="text-sm">
           <span className="font-semibold">{allCardsCount}</span> result for{" "}
@@ -37,8 +37,8 @@ const CatogeryReview = () => {
         </h1>
         {/* Show all review cards from this category */}
       </div>
-      <ReviewGrid setAllCardsCount={ setAllCardsCount} />
-    </div>
+      <ReviewGrid setAllCardsCount={setAllCardsCount} />
+    </>
   );
 };
 

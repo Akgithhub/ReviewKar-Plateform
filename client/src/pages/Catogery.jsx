@@ -23,7 +23,7 @@ const Catogery = () => {
   return (
     <>
       <Hero {...aboutHeroData} />
-      {/* <MainCatogery /> */}
+      <MainCatogery />
       <AllCategory />
       <CTASection {...CTAsectionData} />
     </>

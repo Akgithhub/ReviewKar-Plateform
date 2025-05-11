@@ -94,7 +94,7 @@ const ProfileSummary = () => {
                 >
                   <img src="./edit.svg" alt="Edit" className="cursor-pointer" />
                   <span className="absolute -bottom-6 left-1/2 -translate-x-1/2 bg-gray-800 text-white text-xs rounded px-2 py-1 opacity-0 group-hover:opacity-100 transition duration-200 whitespace-nowrap">
-                    Show Form
+                    Edit Profile Info
                   </span>
                 </button>
               </div>

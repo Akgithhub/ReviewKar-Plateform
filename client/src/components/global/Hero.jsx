@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { categories } from "@/constents/categories";
 const Hero = ({
   title,
   subtitle,
@@ -8,7 +9,6 @@ const Hero = ({
   getReviewsButtonText,
   earnButtonText,
   inputSection,
-
 }) => {
   return (
     <>
@@ -25,27 +25,23 @@ const Hero = ({
           </p>
 
           {inputSection && (
-            <div className="flex flex-col sm:flex-row bg-white shadow-lg rounded-md overflow-hidden w-full max-w-3xl">
+            <div className="flex flex-col sm:flex-row bg-white shadow-lg rounded-xl overflow-hidden w-full max-w-3xl">
               <input
                 type="text"
                 placeholder="What are you looking for..."
-                className="w-full sm:w-2/3 px-4 py-3 outline-none"
+                className="w-full sm:w-2/3 px-4 py-3 text-gray-700 border-b sm:border-b-0 sm:border-r border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500"
               />
-              <select className="w-full sm:w-1/3 px-4 py-3 border-t sm:border-t-0 sm:border-l border-gray-300 outline-none">
-                <option>Clothing</option>
-                <option>Hotels</option>
-                <option>Restraunts</option>
-                <option>Bars</option>
-                <option>Electronics</option>
-                <option>Beauty</option>
-                <option>Tech</option>
-                {/* Add more categories here */}
+              <select className="w-full sm:w-1/3 px-4 py-3 text-gray-700 border-b sm:border-b-0 sm:border-r border-gray-300 focus:outline-none focus:ring-2 focus:ring-blue-500">
+                {categories.map((category) => (
+                  <option key={category}>{category}</option>
+                ))}
               </select>
-              <button className="bg-blue-600 hover:bg-yellow-400 hover:text-black text-white px-6 py-3 transition-colors duration-300">
+              <button className="bg-blue-600 hover:bg-yellow-400 text-white hover:text-black font-medium px-6 py-3 transition-all duration-300">
                 {buttonText}
               </button>
             </div>
           )}
+
           {getReviewsButtonText && earnButtonText && (
             <div className="flex flex-col md:flex-row justify-center items-center mt-6 w-full gap-4">
               <button className="bg-blue-500 text-white rounded hover:bg-blue-600 px-[40px] py-[10px] max-w-[300px]">

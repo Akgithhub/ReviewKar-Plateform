@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import {
   FaComments,
   FaHeartbeat,
@@ -18,68 +18,62 @@ const categories = [
     icon: <FaTshirt size={40} />,
     results: 1023,
     comments: 2435,
-    link: "/single-catogery-review",
-    // link: "/category/clothing",
   },
   {
     name: "Hotels",
     icon: <FaHotel size={40} />,
     results: 856,
     comments: 455,
-    link: "/single-catogery-review",
-    // link: "/category/hotels",
   },
   {
     name: "Restaurants",
     icon: <FaUtensils size={40} />,
     results: 2400,
     comments: 1323,
-    link: "/single-catogery-review",
-    // link: "/category/restaurants",
   },
   {
     name: "Bars",
     icon: <FaCocktail size={40} />,
     results: 854,
     comments: 345,
-    link: "/single-catogery-review",
-    // link: "/category/bars",
   },
   {
     name: "Electronics",
     icon: <FaTv size={40} />,
     results: 1210,
     comments: 530,
-    link: "/single-catogery-review",
-    // link: "/category/electronics",
   },
   {
     name: "Beauty",
     icon: <FaSpa size={40} />,
     results: 1343,
     comments: 315,
-    link: "/single-catogery-review",
-    // link: "/category/beauty",
   },
   {
     name: "Fitness",
     icon: <FaDumbbell size={40} />,
     results: 678,
     comments: 123,
-    link: "/single-catogery-review",
-    // link: "/category/fitness",
   },
   {
     name: "Doctors",
     icon: <FaHeartbeat size={40} />,
     results: 378,
     comments: 560,
-    link: "/single-catogery-review",
-    // link: "/category/doctors",
   },
 ];
 
 const MainCatogery = () => {
+  const navigate = useNavigate();
+
+  const handleClick = (categoryName) => {
+    const slug = categoryName
+      .toLowerCase()
+      .replace(/[^a-z0-9]+/g, "-")
+      .replace(/^-+|-+$/g, "");
+    navigate(`/catogery/${slug}`);
+  };
+
   return (
     <section className="bg-[#f5faff] py-10">
       <div className="max-w-7xl mx-auto px-4">
@@ -92,17 +86,17 @@ const MainCatogery = () => {
 
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {categories.map((cat, index) => (
-            <Link
-              to={cat.link}
+            <div
               key={index}
-              className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition duration-200"
+              onClick={() => handleClick(cat.name)}
+              className="bg-white rounded-lg shadow-md p-6 hover:shadow-xl transition duration-200 cursor-pointer"
             >
               <div className="flex flex-col items-center space-y-4">
                 <div className="text-gray-700">{cat.icon}</div>
                 <h3 className="text-lg font-medium text-blue-600">
                   {cat.name}
                 </h3>
-                <div className="text-sm text-gray-500 flex flex-row gap-8 items-center">
+                {/* <div className="text-sm text-gray-500 flex flex-row gap-8 items-center">
                   <span className="mb-1 font-semibold">
                     {cat.results.toLocaleString()}{" "}
                     <span className="font-normal">Results</span>
@@ -111,9 +105,9 @@ const MainCatogery = () => {
                     {cat.comments.toLocaleString()}
                     <FaComments />
                   </span>
-                </div>
+                </div> */}
               </div>
-            </Link>
+            </div>
           ))}
         </div>
       </div>
