@@ -9,6 +9,7 @@ const Hero = ({
   getReviewsButtonText,
   earnButtonText,
   inputSection,
+  bgVideo,
 }) => {
   return (
     <>
@@ -16,7 +17,18 @@ const Hero = ({
         className="relative bg-cover bg-center h-screen"
         style={{ backgroundImage: `url('${bgImage}')` }}
       >
-        <div className="absolute z-10 inset-0 bg-black/60 flex flex-col justify-center items-center px-4 text-center">
+        {bgVideo && (
+          <video
+            autoPlay
+            loop
+            muted
+            playsInline
+            className="absolute top-0 left-0 w-full h-full object-cover z-0"
+          >
+            <source src={bgVideo} type="video/mp4" />
+          </video>
+        )}
+        <div className="absolute z-10 inset-0 bg-black/30 flex flex-col justify-center items-center px-4 text-center">
           <h1 className="text-white text-4xl md:text-5xl font-bold mb-4">
             {title}
           </h1>

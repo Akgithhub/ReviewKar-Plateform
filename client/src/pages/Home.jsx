@@ -9,10 +9,11 @@ const Home = () => {
     title: "Every Review is an Experience!",
     subtitle: "Check Ratings of Businesses, Read Reviews & Buy",
     buttonText: "Search",
-    bgImage: "./home_section.jpg",
+    // bgImage: "./home_section.jpg",
     getReviewsButtonText: "Get Reviews",
     earnButtonText: "Earn",
-    inputSection: true,
+    inputSection: false,
+    bgVideo: "./videohome.mp4",
   };
   return (
     <>
