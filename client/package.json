@@ -16,7 +16,7 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.0",
     "@mui/material": "^7.1.0",
-    "@reduxjs/toolkit": "^2.7.0",
+    "@reduxjs/toolkit": "^2.8.1",
     "@tailwindcss/vite": "^4.0.15",
     "axios": "^1.9.0",
     "imagekitio-react": "^4.3.0",
