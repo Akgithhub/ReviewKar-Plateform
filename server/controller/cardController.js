@@ -25,6 +25,7 @@ export const createCard = async (req, res) => {
       rewardAmount,
       totalReviewsNeeded,
       companyName,
+      totalAmount
     } = cardata;
 
     if (!title || !description) {
@@ -59,6 +60,7 @@ export const createCard = async (req, res) => {
       rewardAmount,
       totalReviewsNeeded,
       companyName,
+      totalAmount
     });
 
     // Step 5: Link card to the user's cards array

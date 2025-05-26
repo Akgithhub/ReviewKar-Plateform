@@ -26,6 +26,7 @@ const CreateCardForm = () => {
     rewardAmount: "",
     totalReviewsNeeded: "",
     companyName: "",
+    totalAmount:""
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -60,6 +61,7 @@ const CreateCardForm = () => {
         rewardAmount: formData.rewardAmount,
         totalReviewsNeeded: formData.totalReviewsNeeded,
         companyName: formData.companyName,
+        totalAmount: formData.rewardAmount * formData.totalReviewsNeeded
       },
       userId: user.id,
     };
@@ -70,6 +72,8 @@ const CreateCardForm = () => {
       }/api/card/create-card`;
       const res = await axios.post(createCardApi, payload);
       if (res.status === 201) {
+        console.log("Card created successfully:", res.data.card);
+        
         setError("");
         setSuccess(true); // show success alert
         setFormData({
@@ -80,6 +84,7 @@ const CreateCardForm = () => {
           rewardAmount: "",
           totalReviewsNeeded: "",
           companyName: "",
+          totaldAmount:""
         });
         // Optionally clear image URL from Redux
         // dispatch(setUser({ imageUrl: "" }));
@@ -183,6 +188,21 @@ const CreateCardForm = () => {
           />
         </div>
 
+        {/* Total Amount */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Total Amount (₹)
+          </label>
+          <input
+            type="number"
+            name="totalAmount"
+            disabled
+            value={formData.totalAmount}
+            placeholder={formData.rewardAmount * formData.totalReviewsNeeded}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2"
+            readOnly
+          />
+        </div>
         {/* Reward Amount */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -193,6 +213,8 @@ const CreateCardForm = () => {
             name="rewardAmount"
             value={formData.rewardAmount}
             onChange={handleChange}
+            min={10}
+            defaultValue={10}
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
