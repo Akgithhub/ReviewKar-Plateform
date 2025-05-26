@@ -26,7 +26,7 @@ const CreateCardForm = () => {
     rewardAmount: "",
     totalReviewsNeeded: "",
     companyName: "",
-    totalAmount:""
+    totalAmount: "",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -61,7 +61,7 @@ const CreateCardForm = () => {
         rewardAmount: formData.rewardAmount,
         totalReviewsNeeded: formData.totalReviewsNeeded,
         companyName: formData.companyName,
-        totalAmount: formData.rewardAmount * formData.totalReviewsNeeded
+        totalAmount: formData.rewardAmount * formData.totalReviewsNeeded,
       },
       userId: user.id,
     };
@@ -73,7 +73,7 @@ const CreateCardForm = () => {
       const res = await axios.post(createCardApi, payload);
       if (res.status === 201) {
         console.log("Card created successfully:", res.data.card);
-        
+
         setError("");
         setSuccess(true); // show success alert
         setFormData({
@@ -84,7 +84,7 @@ const CreateCardForm = () => {
           rewardAmount: "",
           totalReviewsNeeded: "",
           companyName: "",
-          totaldAmount:""
+          totaldAmount: "",
         });
         // Optionally clear image URL from Redux
         // dispatch(setUser({ imageUrl: "" }));
