@@ -53,8 +53,11 @@ const EarnList = () => {
                       {card.title}
                     </h3>
                     <p className="text-sm text-gray-600 mt-2">
-                      {card.description}
+                      {card.description.length > 50
+                        ? card.description.slice(0, 50) + "..."
+                        : card.description}
                     </p>
+
                     <p className="text-sm text-gray-600 mt-2">
                       Total Reviews Needed - {card.totalReviewsNeeded}
                     </p>
