@@ -19,7 +19,7 @@ const port = process.env.PORT || 3001;
 const imagekit = new ImageKit({
   urlEndpoint: process.env.IMAGE_KIT_ENDPOINT,
   publicKey: process.env.IMAGEKIT_PUBLIC_KEY,
-  privateKey: process.env.IMAGEKIT_PRIVATE_KEY
+  privateKey: process.env.IMAGEKIT_PRIVATE_KEY,
 });
 // Set up CORS to allow requests from the client
 app.use(
@@ -44,7 +44,7 @@ app.use("/api/card", cardRouter);
 app.use("/api/syncuser", syncRouter);
 
 // Image Upload route
-app.get('/upload', function (req, res) {
+app.get("/upload", function (req, res) {
   var result = imagekit.getAuthenticationParameters();
   res.send(result);
 });
