@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useAuth, useUser } from "@clerk/clerk-react";
 import { useDispatch, useSelector } from "react-redux";
 import { categories } from "../../constents/categories.js";
@@ -7,8 +7,20 @@ import axios from "axios";
 import UploadImageCardCreation from "../../constents/UploadImageCardCreation.jsx";
 import { useNavigate } from "react-router-dom";
 import Alert from "@mui/material/Alert";
+import {
+  Elements,
+  CardElement,
+  useStripe,
+  useElements,
+} from "@stripe/react-stripe-js";
+import { loadStripe } from "@stripe/stripe-js";
 
 const CreateCardForm = () => {
+  useEffect(() => {
+    const paid = localStorage.getItem("paymentDone");
+    if (paid === "true") setPaymentDone(true);
+  }, []);
+
   const { isSignedIn } = useAuth();
   const navigate = useNavigate();
   const { user } = useUser();
@@ -17,6 +29,7 @@ const CreateCardForm = () => {
   const [resetImage, setResetImage] = useState(false);
   const imageUrlFromRedux = useSelector((state) => state.user.imageUrl);
   const [success, setSuccess] = useState(false);
+  const [paymentDone, setPaymentDone] = useState(false);
 
   const [formData, setFormData] = useState({
     title: "",
@@ -26,6 +39,7 @@ const CreateCardForm = () => {
     rewardAmount: "",
     totalReviewsNeeded: "",
     companyName: "",
+    totalAmount: "",
   });
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -37,6 +51,7 @@ const CreateCardForm = () => {
           : value,
     }));
   };
+  let totalpaymentAmount = formData.rewardAmount * formData.totalReviewsNeeded;
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -60,6 +75,7 @@ const CreateCardForm = () => {
         rewardAmount: formData.rewardAmount,
         totalReviewsNeeded: formData.totalReviewsNeeded,
         companyName: formData.companyName,
+        totalAmount: totalpaymentAmount,
       },
       userId: user.id,
     };
@@ -70,6 +86,8 @@ const CreateCardForm = () => {
       }/api/card/create-card`;
       const res = await axios.post(createCardApi, payload);
       if (res.status === 201) {
+        console.log("Card created successfully:", res.data.card);
+
         setError("");
         setSuccess(true); // show success alert
         setFormData({
@@ -80,6 +98,7 @@ const CreateCardForm = () => {
           rewardAmount: "",
           totalReviewsNeeded: "",
           companyName: "",
+          totaldAmount: "",
         });
         // Optionally clear image URL from Redux
         // dispatch(setUser({ imageUrl: "" }));
@@ -98,7 +117,62 @@ const CreateCardForm = () => {
       );
     }
   };
+  const handlePayment = async (e) => {
+    e.preventDefault();
+    const key = import.meta.env.VITE_STRIPE_PUBLISHABLE_KEY;
+    console.log("Stripe publishable key:", key);
+
+    const stripe = await loadStripe(key);
+    if (!stripe) {
+      console.error("Stripe not loaded");
+      return;
+    }
+
+    try {
+      const paymentBody_Data = {
+        card_data_for_payment: {
+          title: formData.title.trim(),
+          description: formData.description.trim(),
+          imageUrl: imageUrlFromRedux,
+          category: formData.category,
+          rewardAmount: formData.rewardAmount,
+          totalReviewsNeeded: formData.totalReviewsNeeded,
+          companyName: formData.companyName,
+          totalAmount: totalpaymentAmount,
+        },
+        userId_for_payment: user.id,
+      };
+
+      const res = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/card/card-create-payment`,
+        paymentBody_Data
+      );
+
+      if (!res || !res.data.id) {
+        console.error("Invalid session response");
+        return;
+      }
+
+      const result = await stripe.redirectToCheckout({
+        sessionId: res.data.id,
+      });
+
+      if (result.error) {
+        console.error(result.error.message);
+      }
+    } catch (error) {
+      console.error("Payment error:", error.message);
+    }
+  };
+  const canCreateCard =
+    formData.title.trim() &&
+    formData.description.trim() &&
+    formData.rewardAmount > 0 &&
+    formData.totalReviewsNeeded > 0 &&
+    paymentDone;
+
   return (
+    // <Elements stripe={stripePromise}>
     <form
       onSubmit={handleSubmit}
       className="max-w-4xl mx-auto my-10 bg-white p-8 rounded-2xl shadow-lg"
@@ -133,7 +207,6 @@ const CreateCardForm = () => {
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
         {/* Category */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -153,7 +226,6 @@ const CreateCardForm = () => {
             ))}
           </select>
         </div>
-
         {/* Total Reviews Needed */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -168,7 +240,6 @@ const CreateCardForm = () => {
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
         {/* Company Name */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -182,7 +253,21 @@ const CreateCardForm = () => {
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
+        {/* Total Amount */}
+        <div>
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Total Amount (₹)
+          </label>
+          <input
+            type="number"
+            name="totalAmount"
+            disabled
+            value={formData.totalAmount}
+            placeholder={formData.rewardAmount * formData.totalReviewsNeeded}
+            className="w-full border border-gray-300 rounded-lg px-4 py-2"
+            readOnly
+          />
+        </div>
         {/* Reward Amount */}
         <div>
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -193,15 +278,15 @@ const CreateCardForm = () => {
             name="rewardAmount"
             value={formData.rewardAmount}
             onChange={handleChange}
+            min={10}
+            defaultValue={10}
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           />
         </div>
-
         {/* Upload Image */}
         <div className="flex items-end">
           <UploadImageCardCreation />
         </div>
-
         {/* Description (Full Width) */}
         <div className="md:col-span-2">
           <label className="block text-sm font-medium text-gray-700 mb-1">
@@ -216,13 +301,33 @@ const CreateCardForm = () => {
             className="w-full border border-gray-300 rounded-lg px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-500"
           ></textarea>
         </div>
+        <div className="md:col-span-2">
+          <label className="block text-sm font-medium text-gray-700 mb-1">
+            Payment
+          </label>
+          <button
+            type="button"
+            className={`w-full ${
+              paymentDone ? "bg-green-600" : "bg-blue-600"
+            } hover:opacity-90 text-white font-medium py-3 px-6 rounded-lg transition duration-300 cursor-pointer`}
+            onClick={handlePayment}
+            disabled={paymentDone}
+          >
+            {paymentDone ? "Payment Successful ✅" : "Pay & Proceed"}
+          </button>
+        </div>
       </div>
 
       {/* Submit Button */}
       <div className="mt-8">
         <button
           type="submit"
-          className="w-full bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-6 rounded-lg transition duration-300 cursor-pointer"
+          className={`w-full ${
+            canCreateCard
+              ? "bg-green-600 hover:bg-green-700"
+              : "bg-gray-400 cursor-not-allowed"
+          } text-white font-medium py-3 px-6 rounded-lg transition duration-300`}
+          disabled={!canCreateCard}
         >
           Create Card
         </button>

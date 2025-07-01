@@ -343,6 +343,9 @@ const ReviewCard = ({ cards = [], loading, setOnSucess, setError }) => {
           )}
         </div>
       )}
+      <button className="bg-blue-500 hover:bg-blue-700 text-white font-semibold py-2 px-4 rounded mt-4">
+        <Link to={"/pricing"}>Create Card</Link>
+      </button>
     </div>
   );
 };
@@ -461,12 +464,9 @@ const ProfileSectionCards = () => {
           />
           {/* <Pagination /> */}
           {/* console.log(userData.cards); */}
-
-          
-            <Stack spacing={2}>
-              <Pagination count={10} />
-            </Stack>
-         
+          <Stack spacing={2}>
+            <Pagination count={10} />
+          </Stack>
         </div>
         <CompanyInfo
           companyData={userData}

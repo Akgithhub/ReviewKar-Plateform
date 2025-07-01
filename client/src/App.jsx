@@ -9,19 +9,21 @@ import Earn from "./pages/Earn";
 import Catogery from "./pages/Catogery";
 import CatogeryReview from "./pages/CatogeryReview";
 import MyCards from "./pages/MyCards";
-
+import PaymentSuccess from "./components/global/PaymentSuccess";
+import PaymentFailed from "./components/global/PaymentFailed";
 
 const App = () => {
   return (
     <>
       <Router>
         <Routes>
-      
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="reviews" element={<Reviews />} />
             <Route path="pricing" element={<Pricing />} />
+            <Route path="payment-success" element={<PaymentSuccess />} />
+            <Route path="payment-cancelled" element={<PaymentFailed />} />
             <Route path="earn" element={<Earn />} />
             <Route path="catogery" element={<Catogery />} />
             <Route path="my-cards" element={<MyCards />} />

@@ -7,6 +7,7 @@ import {
   getCardById,
   getCardsByUserId,
   getCardByCategory,
+  createCardPaymentWithStripe,
 } from "../controller/cardController.js";
 import { clerkMiddleware } from "@clerk/express";
 
@@ -17,6 +18,7 @@ cardRouter.get("/cards", getAllCard);
 cardRouter.delete("/delete-card/:id/:userid", clerkMiddleware(), deleteCard);
 cardRouter.patch("/update-card/:id", clerkMiddleware(), updateCard);
 cardRouter.get("/get-card/:id", clerkMiddleware(), getCardById);
+cardRouter.post("/card-create-payment", createCardPaymentWithStripe);
 cardRouter.get("/get-cards-by-user/:id", clerkMiddleware(), getCardsByUserId);
 cardRouter.get(
   "/get-card-by-category/:category",

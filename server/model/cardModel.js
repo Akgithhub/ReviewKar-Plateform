@@ -26,7 +26,10 @@ const cardSchema = new mongoose.Schema(
     },
     totalReviewsNeeded: {
       type: Number,
-    //   required: true, // How many reviews the user wants
+      default: 10, // Default to 10 reviews needed
+    },
+    totalAmount: {
+      type: Number,
     },
     maxSubmissions: {
       type: Number,

@@ -13,13 +13,22 @@ const ReviewCard = ({ review }) => {
         <div>
           <h3 className="text-xl font-bold text-gray-800">{review.title}</h3>
           <p className="text-sm text-gray-600">{review.category}</p>
-          <p className="text-yellow-500 text-sm">★★★★★ {review.rewardAmount}/5.0</p>
+          <p className="text-yellow-500 text-sm">
+            ★★★★★ {review.rewardAmount}/5.0
+          </p>
         </div>
       </div>
 
       {/* Company and description */}
-      <h4 className="text-lg font-semibold mb-2 text-gray-800">{review.company}</h4>
-      <p className="text-gray-700 text-sm mb-2">{review.description}</p>
+      <h4 className="text-lg font-semibold mb-2 text-gray-800">
+        {review.company}
+      </h4>
+      <p className="text-gray-700 text-sm mb-2">
+        {" "}
+        {review.description.length > 100
+          ? review.description.slice(0, 100) + "..."
+          : review.description}
+      </p>
 
       {/* Review info */}
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 text-sm text-gray-600 mb-4">

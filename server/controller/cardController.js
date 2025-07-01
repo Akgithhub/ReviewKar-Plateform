@@ -1,5 +1,6 @@
 import cardModel from "../model/cardModel.js";
 import userModel from "../model/authModel.js";
+import Stripe from "stripe";
 
 // ------------------createCard-------------------
 /**
@@ -25,6 +26,7 @@ export const createCard = async (req, res) => {
       rewardAmount,
       totalReviewsNeeded,
       companyName,
+      totalAmount,
     } = cardata;
 
     if (!title || !description) {
@@ -59,6 +61,7 @@ export const createCard = async (req, res) => {
       rewardAmount,
       totalReviewsNeeded,
       companyName,
+      totalAmount,
     });
 
     // Step 5: Link card to the user's cards array
@@ -322,6 +325,77 @@ export const getCardByCategory = async (req, res) => {
     return res.status(500).json({
       message: "Server error while fetching cards by category.",
       error: error.message,
+    });
+  }
+};
+
+export const createCardPaymentWithStripe = async (req, res) => {
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
+  const { card_data_for_payment, userId_for_payment } = req.body;
+
+  if (!card_data_for_payment || !userId_for_payment) {
+    return res
+      .status(400)
+      .json({ error: "Card data and user ID are required" });
+  }
+
+  const {
+    title,
+    description,
+    imageUrl,
+    category,
+    rewardAmount,
+    totalReviewsNeeded,
+    companyName,
+    totalAmount,
+  } = card_data_for_payment;
+
+  if (!title || !description || !totalAmount) {
+    return res
+      .status(400)
+      .json({ error: "Title, description, and amount are required" });
+  }
+
+  try {
+    const session = await stripe.checkout.sessions.create({
+      payment_method_types: ["card"],
+      mode: "payment",
+      line_items: [
+        {
+          price_data: {
+            currency: "inr",
+            product_data: {
+              name: `📢 ${title} (${category})`,
+              description: `💰 ₹${rewardAmount} × ${totalReviewsNeeded} reviews\nCompany: ${companyName}`,
+              images: imageUrl ? [imageUrl] : undefined, // Optional image
+            },
+            unit_amount: Math.round(totalAmount * 100), // Amount in paise
+          },
+          quantity: 1,
+        },
+      ],
+      metadata: {
+        userId: userId_for_payment,
+        title,
+        description,
+        category,
+        rewardAmount: rewardAmount.toString(),
+        totalReviewsNeeded: totalReviewsNeeded.toString(),
+        companyName,
+        totalAmount: totalAmount.toString(),
+      },
+      customer_creation: "always",
+      billing_address_collection: "required",
+      success_url: `${process.env.CLERK_API_URL}payment-success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${process.env.CLERK_API_URL}payment-cancelled`,
+    });
+
+    return res.status(200).json({ id: session.id });
+  } catch (err) {
+    console.error("Stripe session error:", err);
+    return res.status(500).json({
+      error: "Failed to create payment session",
+      details: err.message,
     });
   }
 };
